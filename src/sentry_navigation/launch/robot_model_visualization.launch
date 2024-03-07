@@ -1,0 +1,18 @@
+<launch>
+  
+  <!-- 用于robot_state_publisher节点 -->
+  <node pkg="tf" type="static_transform_publisher" name="map_red_to_camera_init" args="6.26 7.9 0 0 0 0 map camera_init 100" />   
+  <!-- <node pkg="tf" type="static_transform_publisher" name="map_blue_to_camera_init" args="21.8 8.1 0 3.14 0 0 map camera_init 100" />    -->
+  <!-- <node pkg="tf" type="static_transform_publisher" name="map_test_to_camera_init" args="0 0 0 -1.57 0 0 map camera_init 100" />    -->
+  
+  <!-- 底盘到雷达的变换 -->
+  <node pkg="tf" type="static_transform_publisher" name="base_to_laser" args="0 0 0.45 0 0 0 base_link livox_frame 100" />
+  
+  <!-- URDF -->
+  <param name = "robot_description" textfile = "$(find sentry_navigation)/urdf/mini_mec_robot.urdf"/> 
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" />
+  <node pkg="joint_state_publisher" type="joint_state_publisher" name="joint_state_publisher" />
+
+ </launch>
+
+

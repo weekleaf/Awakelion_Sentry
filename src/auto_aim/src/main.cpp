@@ -54,9 +54,27 @@
 #include "auto_aim/Serial/Serial.h"
 #include "auto_aim/ArmorDetector/ArmorDetector.h"
 #include "auto_aim/Gui/Gui.h"
+#include "robot_driver/vision_rx_data.h"
+#include "robot_driver/vision_tx_data.h"
+
+ros::Publisher vision_pub;
+ros::Subscriber vision_sub;
+robot_driver::vision_tx_data pc_recv_mesg;
+robot_driver::vision_rx_data pc_send_mesg;
 
 using namespace std;
 using namespace cv;
+
+void visionCallback(const robot_driver::vision_rx_data::ConstPtr &msg){
+    pc_send_mesg.bullet_level = msg->bullet_level;
+    pc_send_mesg.direction = msg->direction;
+    pc_send_mesg.robot_color = msg->robot_color;
+    pc_send_mesg.robot_pitch = msg->robot_pitch;
+    pc_send_mesg.robot_yaw = msg->robot_yaw;
+    pc_send_mesg.task_mode = msg->task_mode;
+    pc_send_mesg.time_stamp = msg->time_stamp;
+    pc_send_mesg.visual_valid = msg->visual_valid;
+}
 
 void mainProcessing(MainSettings *main_setting, PackData *pack_data, UnpackData *unpack_data,
                     Serial *serial, ArmorSettings *armor_setting);
@@ -66,8 +84,13 @@ void mainProcessing(MainSettings *main_setting, PackData *pack_data, UnpackData 
 
 int main(int argc, char *argv[])
 {
+    setlocale(LC_ALL,"");
+
     ros::init(argc,argv,"auto_aim");
     ros::NodeHandle nh;
+    
+    vision_pub = nh.advertise<robot_driver::vision_tx_data>("vision_tx_data",1);
+    vision_sub = nh.subscribe("/vision_rx_data", 1, visionCallback);
 #ifdef USE_CUTECOM
     //-----------------------------------【串口助手】------------------------------------------
     // brief：打开cutecom
@@ -94,18 +117,19 @@ int main(int argc, char *argv[])
 #ifdef USE_CUTECOM
     serial.openDevice();
 #else // USE_CUTECOM
-    serial.openPort("/dev/ttyACM0");
+    // serial.openPort("/dev/ttyACM0");
 #endif // USE_CUTECOM
 
-    std::thread process_unpack(&UnpackData::processing, p_unpack_data, &serial);
+    //std::thread process_unpack(&UnpackData::processing, p_unpack_data, &serial);
 
     //-----------------------------------【主线程】--------------------------------------------
     // brief：装甲板识别
     //--------------------------------------------------------------------------------------
-    std::thread process_main(&mainProcessing, &main_setting, &pack_data, &unpack_data, &serial, &armor_setting);
+    // std::thread process_main(&mainProcessing, &main_setting, &pack_data, &unpack_data, &serial, &armor_setting);
 
-    process_main.join();
-    process_unpack.join();
+    // process_main.join();
+    // process_unpack.join();
+    mainProcessing(&main_setting, &pack_data, &unpack_data, &serial, &armor_setting);
 
     return 0;
 }
@@ -187,7 +211,9 @@ void mainProcessing(MainSettings *main_setting, PackData *pack_data, UnpackData 
     // brief：
     //-----------------------------------------------------------------------------------------
     while(1)
-    {
+    {   
+        // 处理通信数据
+        ros::spinOnce();
         // 设置参数滑动条
 #ifdef DEBUG_MODE
         main_setting->setMainParam("主要设置");
@@ -239,9 +265,16 @@ void mainProcessing(MainSettings *main_setting, PackData *pack_data, UnpackData 
 //        else if(unpack_data->getStm2PcMesg()->stm32_info_data.enemy_color == 2)
 //            main_setting->enemy_color = blue;
 
+        // if(pc_send_mesg.robot_color == 1)
+        //     main_setting->enemy_color = red;
+        // else if(pc_send_mesg.robot_color == 2)
+        //     main_setting->enemy_color = blue;
+
 ////         接收电控发送的模式切换(比赛前切记打开)
 //        if(!std::isnan(unpack_data->getStm2PcMesg()->stm32_info_data.main_mode))
 //            main_setting->main_mode = unpack_data->getStm2PcMesg()->stm32_info_data.main_mode;
+
+        // main_setting->main_mode = pc_send_mesg.task_mode;
 
 //#ifdef DEBUG_MODE
 //        std::cout << "main_mode:          " << unpack_data->getStm2PcMesg()->stm32_info_data.main_mode << std::endl;
@@ -249,8 +282,8 @@ void mainProcessing(MainSettings *main_setting, PackData *pack_data, UnpackData 
 //        std::cout << "is_left:            " << unpack_data->getStm2PcMesg()->stm32_info_data.is_left << std::endl;
 //        std::cout << "run_left:           " << unpack_data->getStm2PcMesg()->stm32_info_data.run_left << std::endl;
 //        std::cout << "is_top:             " << unpack_data->getStm2PcMesg()->stm32_info_data.is_top << std::endl;
-        std::cout << "pitch               " << unpack_data->getStm2PcMesg()->stm32_info_data.pitch << std::endl;
-        std::cout << "yaw:                " << unpack_data->getStm2PcMesg()->stm32_info_data.yaw << std::endl;
+        std::cout << "pitch               " << /*unpack_data->getStm2PcMesg()->stm32_info_data.pitch*/pc_send_mesg.robot_pitch << std::endl;
+        std::cout << "yaw:                " << /*unpack_data->getStm2PcMesg()->stm32_info_data.yaw*/pc_send_mesg.robot_yaw << std::endl;
 //        std::cout << "pitch_offset:       " << unpack_data->getStm2PcMesg()->stm32_info_data.pitch_offset << std::endl;
 //        std::cout << "yaw_offset:         " << unpack_data->getStm2PcMesg()->stm32_info_data.yaw_offset << std::endl;
  //       std::cout << "bullet_spd:         " << unpack_data->getStm2PcMesg()->stm32_info_data.bullet_spd << std::endl;

@@ -384,9 +384,34 @@ typedef  struct  //__packed
 }  stm32_info_t;
 #endif
 #endif // !USE_WIN
+typedef  struct  //__packed
+{
+    u8 robot_color : 1;
+    u8 task_mode : 1;
+    u8 visual_valid : 1;
+    u8 direction : 2;
+    u8 bullet_level : 3;
+    float robot_pitch;
+    float robot_yaw;
+    float time_stamp;
+}__attribute__((packed)) robot_tx_data;
 
 
 /********** the information from computer **********/
+typedef  struct  //__packed
+{
+    union
+    {
+        u8 data_byte;
+        struct{
+            u8 task_mode : 1;
+            u8 visual_valid : 1;
+            u8 reserved : 6;
+        }info;
+    }mode_Union;
+    float aim_pitch;
+    float aim_yaw;
+}__attribute__((packed)) robot_rx_data;
 #ifndef USE_WIN
 typedef  struct  //__packed
 {
@@ -565,7 +590,7 @@ typedef struct  //__packed
   //  cali_response_t   cali_response_data;
   //  rc_info_t         remote_ctrl_data;
     version_info_t    version_info_data;  //stm32信息旧版方式（本为版本信息）
-    stm32_info_t     stm32_info_data;       //stm32信息
+    robot_tx_data     stm32_info_data;       //stm32信息
 }__attribute__((packed))  send_pc_t;
 #else
 typedef struct  //__packed
@@ -591,15 +616,15 @@ typedef struct  //__packed
 typedef struct  //__packed
 {
     /* data receive */
-    chassis_ctrl_t       chassis_control_data;
-    gimbal_ctrl_t        gimbal_control_data;
-    shoot_ctrl_t         shoot_control_data;
-    global_err_level_t   global_error_level;
-    infantry_structure_t  structure_data;
-    cali_cmd_t               cali_cmd_data;
+    robot_rx_data       chassis_control_data;
+    robot_rx_data        gimbal_control_data;
+    robot_rx_data         shoot_control_data;
+    robot_rx_data   global_error_level;
+    robot_rx_data  structure_data;
+    robot_rx_data               cali_cmd_data;
     /* receive to forward */
-    client_show_data_t   show_in_client_data;
-    user_to_server_t     pc_to_server_data;
+    robot_rx_data   show_in_client_data;
+    robot_rx_data     pc_to_server_data;
 }__attribute__((packed))  receive_pc_t;
 #else
 typedef struct  //__packed

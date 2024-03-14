@@ -31,7 +31,7 @@ void ArmorDetector::armorDetecProc(cv::Mat src, AngleSolver &angle_slover,
     QuadrilateralPos armor_pos;  // 装甲板四个点坐标
     cv::RotatedRect rot_rect;    // 装甲板旋转矩形
 //    static double  pit_before=0,yaw_before=0;
-    static double pit_last, yaw_last;
+    static double pit_last = 0, yaw_last = 0;
     static int top = 0;
 //    static bool is_left;
 //    float num = 2.0;
@@ -198,8 +198,10 @@ void ArmorDetector::armorDetecProc(cv::Mat src, AngleSolver &angle_slover,
 
         pc_recv_mesg.aim_pitch = pit_final;
         pc_recv_mesg.aim_yaw = yaw_final;
-        pc_recv_mesg.visual_valid = 1;
-
+        if((pit_final >= -5 && pit_final <= 5) && (yaw_final >= -5 && yaw_final <= 5))
+            pc_recv_mesg.visual_valid = 1;
+        else
+            pc_recv_mesg.visual_valid = 0;
     }
     else
     {
@@ -252,7 +254,10 @@ void ArmorDetector::armorDetecProc(cv::Mat src, AngleSolver &angle_slover,
 
         pc_recv_mesg.aim_pitch = pit_last;
         pc_recv_mesg.aim_yaw = yaw_last;
+        pit_final = 0;
+        yaw_final = 0;
 
+        /*
         //if(1)
         if(lost_flag < 25)
             //pack_data->setPc2StmMesg()->gimbal_control_data.visual_valid = 1;
@@ -266,6 +271,7 @@ void ArmorDetector::armorDetecProc(cv::Mat src, AngleSolver &angle_slover,
         }
 
         lost_flag++;
+        */
     }
 
     // 6.串口发送

@@ -9,6 +9,8 @@
         <rosparam file="$(find sentry_navigation)/params/recovery_behaviors.yaml" command="load" />
         <rosparam file="$(find sentry_navigation)/params/global_planner_params.yaml" command="load" />
         <rosparam file="$(find sentry_navigation)/params/eband_local_planner_params.yaml" command="load" />
+        <!-- <rosparam file="$(find sentry_navigation)/params/teb_local_planner_params.yaml" command="load" /> -->
+        <!-- <rosparam file="$(find sentry_navigation)/params/costmap_converter_params.yaml" command="load" /> -->
     </node>
 
 </launch>

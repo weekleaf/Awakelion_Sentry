@@ -1,59 +1,17 @@
-﻿/*
-                                        ....... ............
-                                        ..,]]/@@@@@@@@@]]]..
-                            . .....]/@@@@@@@@@@@@@@@@@@@@@@@@@@]........
-                            ..\/@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\]...
-                    ......,@@@@@@@@@@@@@@@@/[[.............*[\@@@@@@@@@@]`......
-                    ...,@@@@@@@@@@@@@\@@..... ... ,\]..........@@@/\@@@@@@@@@]..
-            ../@\`.....,[[[[\@@@....=@@@....    ..,@@@@@@@]`...@@@@@@\].,[@@@@@@@].........                                                                                 .. .......... ...
-            ./@@@@@@\`......=@@@^..,@@@@^...    ...,@@@@@@@@@@@@\]......*`.....[\@@@@\`....                                                                                 ................
-         ...=@@@@@@@@@@@@@@@@@@@@@@@@@@@@.....=@\]...\@@@@@@@@@@@@@@@@@\].............[[....                                                                                .................
-        .. .@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@]...\@@@@^........,[[@@@@@@@@@@@@@]..............                                                                            .......,[\@@@@@]....
-        ...=@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@`@@@@/.........=@@^.....*[[@@@@@@@`....,@\]......                                                                   ..*=O@@@@@@@@\]]].*......
-        ...@@@@@@[[@@@@@@@@@@[\@@@@@@@@@@@@@@@@@@@@/]]].......=@@^....................=@@@@^....                                                                   ..*@@@@@O`\@^,^*@@@^......
-        ..=@[...    ,@@@@@@`..=@@@....=@@@..\@@@@/..\@@@@@@@@]/@@\]]]]]]`...@@@].......,@@@@^...                                                                   .=*@@@@@*,@\.,..,@@^......
-        ........    .=@@@@\...=@@@....=@@@...@@@@.....\@@@@@@@@@@@@@@@@@@@@`.\@@@@@^....@@@@^.......                                                               .,*@@@/*OOO.,*,[@@@^,.....
-                    .=@@@@@...=@@@.. .=@@@...=@@@.......\@@@@@@@@/[[[@@@@@@@\.,@@@@@@...@@@@^...........                                                           .`=@@@@oO.*.*=@^`@@^*.....
-                    .=@@@@@...=@@@....=@@@...@@@@..............@@^......,@@@@..,@@@@@@]@@@@@`.@@@\......                                                           .^=@@@`=@/*O..,,@@@*^.....
-                    .=@@@@@^. =@@@ ...=@@@...@@@^..............@@^........,@/...=@@@@@@@@@@^..=@@@@`....                                                           .*=@@O/@O@@`/@@@@@@*^.....
-                    .@@@@@@^ .=@@@ ...=@@@..=@@@...]]`........,@@*...............@@@@@@@@@/. ..@@@@@^...                                                           ..O@@@@@@@@\@@@@@@O*^.....
-        ....    ..../@@@@@@^..=@@@... =@@@. /@@@...=@@@@@@@@@@@@@@@@@@]..........@@@@@@@@/.....,@@@@@...                                                           ..@@@@@@@@O@@@@@@@^=.....
-        .\..    ...=@@@@@@@^..=@@@....=@@@..@@@^.....,@@@@@@@@@@@@@@@@@@@......./@@@@@@@`.....=@@@@@@^..                                                           .*@@@@@@@@**@O[O@@^O.....
-        .@@.......=@@@@@@@@...@@@@..../@@@.=@@@`    ....[[[[@@@@@@@@@@@@@@`..../@@@@@@@@......@O@@@@@@.=@@@@@@]]]`..............                                ...*=@@@O@@@@**@@**@@*......
-        =@@@\. ../@@@@@@@@\],@@@@..../@@@^.=@@@.    ..........@@@...........,@@@@@@@@@@^..../@@O@@@@@@.=@@@@@@@@@@@@@@@@@@]]]...                                ....=@@@*=@@^.,*`.*@@\*......
-        .@@@@@@@@@@@@@@@@@@@@@@@@\]/@@@@^..=@@@             .,@@@..... .,O@@@@@[[\@@@@@^...@@@^.@@@@@^.=@@@@@@@@@@@@@@@@@@@@@@@@@@@\]`.............             .. .O@*....*]]O],]/@@,.......
-        .\@@@@@@@@@@@@@@@@@@@@[[@@@@@@@@\]`@@@@.            .=@@@ ......,]]]....*@@@@@@@..=@@^.=@@@@@..@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\]......             .. .@@@@@@O@@@O@@@//.........
-        .,@@@@@@@@@@@@@@@@@@`,@@@@@@/......\@@@O]]....  ,]]/@@@@@@@@@@@@[......=@@@@@@@@*.=@. .=@@@@^..     ............,[[@@@@@@@@@@@@@@@@@@@@@@]`... .          ...........................
-        ..,@@@@@@@@@`......*.[*`[[`........=@@@.........=@@@@@@@@@@@@[.......,@@@@@@@@@@^......@@@@@....    .......... ...........,[[@@@@@@@@@@@@@@@@\`.          ...........................
-    ........,[[[............................@@@@]]]@@@@@@@@@@@@@@@[.......,/@@@@@@@@@@@@@`... =@@@@@                .........,]@@@@@@@@@@@@@@@@@@@@@@@@@@@].....    ...,@@\]]]/@@@@@@@@@@]`.....
-     ../@@@@@@@@@@@\O@@@@@@@@@@@@@\`......,]/@@@@@@@@/*@@@@@@@@/*]]]]@@@@@@@@@@@[`.@@@@@@^....@@@@@^                ...../@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\..    ...\@@@@@@@@@@@@@@@@@@@@@\`.
-....,@@@@@@@@/[[[[\@@@\[@@@@@@@@@@@@@@@@@@@@@@@@@/[../@@@@@/`...............    ...@@@@@@@....@@@@@\                ..]@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\`.... ...[@@@@@@@@@@@@@@@@@@@@@`...
-...,@@@@@/......................,[@@@@@@@@@@/[......[[[*........... ........    ../@@@@@@@....@@@@@@                ,@@@@@@@@@@[`..=@@@@@@@@@@@@@@@@@@@.[@@@@@@@@@@@]...................,[@@@@@@@@`.
- ..@@@@@/ ..        ........... ...........  ...        ............    ........,@@@@@@@@^....\@@@@@....        .../@@@@@@@@/....,@@@@@@`.......[@@@@@@\...,\@@@@@@@@@@\.......             ,@@@@@@^....
-..*@@@@@`...          .........     .......  ...                ....    ....../@@@@@@@@@@.....=@@@@@^...        .=@@@@@@@@/...../@@@@/............\@@@@@^.....,\@@@@@@@@@@\`....            .,@@@@@@. ..
-...@@@@@@...        ............... .............................. ......]]@@@@@@@@@@@@@......=@@@@@@...........@@@@@@@@@`....,@@@@@`......     ..,@@@@@@. .    .,\@@@@@@@@@@@@`.............,@@@@@@^...
-. .=@@@@@@`.        ......*............]]@@@@@@@@@@@]]]]]]]]]]]]]]@@@@@@@@@@@@@@@@@@@@/.. ..../@@@@@@\........,@@@@@@@@@...../@@@@@`.......     ..,@@@@@@^..    .....[@@@@@@@@@@@@@@]]]`]]]]@@@@@@@@...
-    =@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@*......./@@@@@@@@^....../@@@@@@@@^.....@@@@@@`....../@@@@@@@@@@@@@@@`..        ....,\@@@@@@@@@@@@@@@@@@@@@@@@@`
-    ..\@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@/`.......,@@@@@@@@@@@^.../@@@@@@@@@`. ..,@@@@@@`..    =@@@@@@@@@@@@@@@@...        .........[\@@@@@@@@@@@@@@@@@@`..
-        .[[[[[[[[[[[[[[[[[[[[[[[[[[@@@@/[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[....    ..@@@@@[\@@@[\@@..[[[[[[[[[[.....=@/[@@[`...... \@@@@@@@@@@@@@[`....                    ...,[[[[@@@[[[.....
-        ..........................................  ................................    .............. ................................ ....................                    ...................
-*/
-#include "ros/ros.h"
+﻿#include "ros/ros.h"
 #include <iostream>
 #include <thread>
 #include <opencv2/opencv.hpp>
-//#include <QFile>
-//#include <QDir>
 #include <unistd.h>
 #include <ctime>
+#include <mutex>
 
 #include "auto_aim/Settings/Settings.h"
 #include "auto_aim/AngleSolver/PnpSolver.h"
 #include "auto_aim/Camera/MVVideoCapture.h"
-#include "auto_aim/Serial/PackData.h"
-#include "auto_aim/Serial/Serial.h"
 #include "auto_aim/ArmorDetector/ArmorDetector.h"
-#include "auto_aim/Gui/Gui.h"
+#include "auto_aim/RuneDetector/inference_api.hpp"
+#include "auto_aim/predict/predict.h"
 #include "robot_driver/vision_rx_data.h"
 #include "robot_driver/vision_tx_data.h"
 
@@ -61,9 +19,6 @@ ros::Publisher vision_pub;
 ros::Subscriber vision_sub;
 robot_driver::vision_tx_data pc_recv_mesg;
 robot_driver::vision_rx_data pc_send_mesg;
-
-using namespace std;
-using namespace cv;
 
 void visionCallback(const robot_driver::vision_rx_data::ConstPtr &msg){
     pc_send_mesg.bullet_level = msg->bullet_level;
@@ -76,14 +31,216 @@ void visionCallback(const robot_driver::vision_rx_data::ConstPtr &msg){
     pc_send_mesg.visual_valid = msg->visual_valid;
 }
 
-void mainProcessing(MainSettings *main_setting, PackData *pack_data, UnpackData *unpack_data,
-                    Serial *serial, ArmorSettings *armor_setting);
-//#ifdef USE_CUTECOM
-//void openCuteCom();
-//#endif // +USE_CUTECOM
+using namespace buff_detector;
 
-int main(int argc, char *argv[])
-{
+struct AimData{
+    cv::Mat src;
+    ArmorObject armor_object;
+    AngleSolver angle_solver=AngleSolver(PARAM_CALIBRATION_752);
+    std::vector<ArmorObject> cars_map[8];
+    double cars_radio[8]={0.0,0,0,0,0,0,53.7,0};
+    double running_time=2.0;
+
+    BuffObject buff_object;
+
+    MainSettings main_settings=MainSettings(PARAM_OTHER_PATH,PARAM_CAMERA_PATH);
+    bool flag_detector=false;
+    bool flag_predictor=true;
+};
+
+AimData aim_data;
+
+// PackData pack_data;
+// UnpackData unpack_data;
+// UnpackData *p_unpack_data = &unpack_data;
+// Serial serial(aim_data.main_settings.port_param);
+
+void predictThread(AimData* p_aim_data);
+void detectThread(AimData *p_aim_data){
+
+
+#ifdef DEBUG_MODE
+    (*p_aim_data).main_settings.setMainParam(WIN_OTHER);
+    //main_settings.setCameraParam(WIN_CAMERA);
+#endif
+    ArmorDetector ad;
+    std::vector<ArmorObject> objects;
+    std::vector<BuffObject> bobjects;
+    ArmorObject best_object;
+    ad.initModel(MODEL_PATH);
+    DetectorTool detector_tool;
+
+
+
+    while(ros::ok()){
+        ros::spinOnce();
+        MVVideoCapture::GetFrame((*p_aim_data).src);
+        if(((*p_aim_data).src).empty()){
+            std::cout<<"!!!!!!!!!!!!!!!!!!!!"<<std::endl;
+        }
+        else{
+#ifdef DEBUG_MODE
+            cv::Mat dst;
+            cv::resize((*p_aim_data).src,dst,cv::Size(SHOW_WIDTH,SHOW_HEIGHT));
+            cv::imshow("save",dst);
+
+#ifdef SAVE_IMG
+            static int pic=0;
+            std::stringstream num;
+            num<<pic;
+            cv::imwrite("/media/rm/upan/hero640480/"+num.str()+".jpg",dst);
+            pic++;
+#endif
+            cv::waitKey(1);
+#endif
+            cv::resize((*p_aim_data).src,(*p_aim_data).src,cv::Size(SHOW_WIDTH,SHOW_HEIGHT));
+        }
+
+        if(((*p_aim_data).src).empty()){
+            std::cout<<"src is empty"<<endl;
+            
+            sleep(1);
+            continue;
+        }
+
+        
+
+       double time1=cv::getTickCount();
+       bool color=0;
+
+       // 读裁判系统颜色和电控的模式切换
+       if(pc_send_mesg.robot_color == 0)
+            color = 0;
+        else if(pc_send_mesg.robot_color == 1)
+            color = 1;
+        if(!std::isnan(pc_send_mesg.task_mode))
+            (*p_aim_data).main_settings.main_mode = pc_send_mesg.task_mode;
+
+       if((*p_aim_data).main_settings.main_mode == 0){
+
+         ad.detect(((*p_aim_data).src),objects);
+         detector_tool=DetectorTool(objects,color);
+         //best_object=&objects[0];
+
+         for(int i=0;i<8;i++){
+             (*p_aim_data).cars_map[i]=detector_tool.cars_map[i];
+         }
+
+
+         if(detector_tool.bestArmor(&best_object)){
+
+             if(best_object.color==1||best_object.color==3){
+
+                 (*p_aim_data).angle_solver.setTargetSize(23.1,5.7);//big
+             }
+             else{
+
+                 (*p_aim_data).angle_solver.setTargetSize(15.3,5.7);//small
+             }
+             (*p_aim_data).armor_object=best_object;
+
+             double time2=cv::getTickCount();
+             (*p_aim_data).running_time=(time2-time1)/cv::getTickFrequency();//s             
+#ifdef DEBUG_MODE
+       cv::Mat src_clone=(*p_aim_data).src.clone();
+       std::vector<cv::Scalar> color_list;
+       color_list.push_back(cv::Scalar(255,0,0));
+       color_list.push_back(cv::Scalar(0,255,0));
+       color_list.push_back(cv::Scalar(0,0,255));
+       color_list.push_back(cv::Scalar(255,255,0));
+       if(&best_object!=NULL)
+       for(int i=0;i<4;i++){
+           cv::line(src_clone,best_object.apex[i%4],best_object.apex[(i+1)%4],color_list[i],2);
+           std::stringstream s;
+           std::stringstream d;
+
+           s << best_object.color;
+           d << best_object.cls;
+           cv::putText(src_clone, "color_size: " + s.str(), best_object.apex[2], cv::FONT_HERSHEY_COMPLEX, 0.3, cv::Scalar(0, 255, 0));
+           cv::putText(src_clone, "class_num: " + d.str(), best_object.apex[3], cv::FONT_HERSHEY_COMPLEX, 0.3, cv::Scalar(0, 255, 0));
+        }
+
+       std::stringstream time;
+       time<<1.0/(*p_aim_data).running_time;
+       cv::putText(src_clone, "fps: " + time.str(), cv::Point(50,50), cv::FONT_HERSHEY_COMPLEX, 0.9, cv::Scalar(0, 255, 0));
+       cv::resize(src_clone,src_clone,cv::Size(750,600));
+       cv::imshow("best_armor",src_clone);
+       //cv::waitKey(1);
+#endif
+         }
+
+       }
+       predictThread(p_aim_data);
+     }
+}
+
+void predictThread(AimData* p_aim_data){
+    Eigen::Vector3d moto_tvec;
+    double moto_move_pitch;
+    double moto_move_yaw;
+    static double last_pitch=0;
+    static double last_yaw=0;
+    static int lost_flag=0;
+    static double during_time=2.0;
+    double predict_time=during_time+(*p_aim_data).running_time;//s
+    static ArmorPredictTool armor_predict_tool;
+    armor_predict_tool.kalmanInit();
+
+    double time1=cv::getTickCount();
+        if((*p_aim_data).main_settings.main_mode == 0){
+
+             double moto_pitch_angle=pc_send_mesg.robot_pitch;
+             double moto_yaw_angle=pc_send_mesg.robot_yaw;
+            // std::cout<<"电控角："<<moto_pitch_angle<<std::endl;
+             //std::cout<<moto_yaw_angle<<std::endl;
+//           double moto_pitch_angle=20.0;
+//           double moto_yaw_angle=361.0;
+            double bullet_speed=25/*pc_send_mesg.bullet_level*/;
+
+            armor_predict_tool.inputData((*p_aim_data).angle_solver,moto_pitch_angle,moto_yaw_angle,(*p_aim_data).cars_radio,&((*p_aim_data).armor_object),(*p_aim_data).cars_map,bullet_speed,predict_time);
+
+            if(armor_predict_tool.predictArmor()){
+
+                lost_flag=0;
+                (*p_aim_data).angle_solver.Camera2Moto(moto_pitch_angle,moto_yaw_angle,armor_predict_tool.tvec_armor,armor_predict_tool.tvec11,moto_move_pitch,moto_move_yaw,bullet_speed,9.8);
+                last_pitch=moto_move_pitch;
+                last_yaw=moto_move_yaw;
+                pc_recv_mesg.aim_pitch=moto_move_pitch+0.0;
+                pc_recv_mesg.aim_yaw=moto_move_yaw;
+                pc_recv_mesg.visual_valid=1;
+                // if(((moto_move_pitch - pc_send_mesg.robot_pitch) >= -10 && (moto_move_pitch - pc_send_mesg.robot_pitch) <= 10) && ((moto_move_yaw - pc_send_mesg.robot_yaw) >= -10 && (moto_move_yaw - pc_send_mesg.robot_yaw) <= 10))
+                //     pc_recv_mesg.shoot_valid = 1;
+                // else
+                //     pc_recv_mesg.shoot_valid = 0;
+                pc_recv_mesg.shoot_valid = 1;
+                std::cout<<moto_move_yaw-moto_yaw_angle<<std::endl;
+               // std::cout<<"转动角"<<moto_move_pitch-moto_pitch_angle<<std::endl;
+                //std::cout<<"到达角"<<moto_move_pitch<<std::endl;
+            }
+            else if(lost_flag<=25){
+                pc_recv_mesg.aim_pitch=/*last_pitch+0.0*/0;
+                pc_recv_mesg.aim_yaw=/*last_yaw*/0;
+                pc_recv_mesg.visual_valid=1;
+                pc_recv_mesg.shoot_valid = 0;
+                lost_flag++;
+            }
+            else{
+                pc_recv_mesg.aim_pitch=0;
+                pc_recv_mesg.aim_yaw=0;
+                pc_recv_mesg.visual_valid=0;
+                pc_recv_mesg.shoot_valid = 0;
+            }
+            vision_pub.publish(pc_recv_mesg);
+        }
+}
+
+
+
+
+
+
+
+int main(int argc, char *argv[]){
     setlocale(LC_ALL,"");
 
     ros::init(argc,argv,"auto_aim");
@@ -91,271 +248,44 @@ int main(int argc, char *argv[])
     
     vision_pub = nh.advertise<robot_driver::vision_tx_data>("vision_tx_data",1);
     vision_sub = nh.subscribe("/vision_rx_data", 1, visionCallback);
-#ifdef USE_CUTECOM
-    //-----------------------------------【串口助手】------------------------------------------
-    // brief：打开cutecom
-    //---------------------------------------------------------------------------------------
-    std::thread cutecom(&openCuteCom);
-    sleep(2);
-
-    system("xdotool getactivewindow windowsize 100% 100%"
-           "&&xdotool mousemove 1200 45 click 1 key ctrl+a+Delete type /dev/ttyACM0"
-           "&&xdotool mousemove 150 45 click 1");
-#endif // USE_CUTECOM
-
-    //-----------------------------------【类初始化】------------------------------------------
-    // brief：初始化类
-    //---------------------------------------------------------------------------------------
-    MainSettings main_setting(PARAM_OTHER_PATH);
-    ArmorSettings armor_setting(PARAM_ARMOR_PATH);
-    PackData pack_data;
-    UnpackData unpack_data;
-    UnpackData *p_unpack_data = &unpack_data;
-    Serial serial(main_setting.port_param);
-    main_setting.digitClassiferParam();
-
-#ifdef USE_CUTECOM
-    serial.openDevice();
-#else // USE_CUTECOM
-    // serial.openPort("/dev/ttyACM0");
-#endif // USE_CUTECOM
-
-    //std::thread process_unpack(&UnpackData::processing, p_unpack_data, &serial);
-
-    //-----------------------------------【主线程】--------------------------------------------
-    // brief：装甲板识别
-    //--------------------------------------------------------------------------------------
-    // std::thread process_main(&mainProcessing, &main_setting, &pack_data, &unpack_data, &serial, &armor_setting);
-
-    // process_main.join();
-    // process_unpack.join();
-    mainProcessing(&main_setting, &pack_data, &unpack_data, &serial, &armor_setting);
-
-    return 0;
-}
-
-#ifdef USE_CUTECOM
-void openCuteCom()
-{
-    system("cutecom");
-}
-#endif // USE_CUTECOM
-
-void mainProcessing(MainSettings *main_setting, PackData *pack_data, UnpackData *unpack_data,
-                    Serial *serial, ArmorSettings *armor_setting)
-{
-    //-----------------------------------【类初始化】--------------------------------------------
-    // brief：初始化主函数类
-    //-----------------------------------------------------------------------------------------
-    ArmorDetector armor(armor_setting, main_setting, armor_setting->armor_contours);
-    AngleSolver angle_slover(PARAM_CALIBRATION_752, 1);
-    GravityCompensateResolve gc = GravityCompensateResolve();
-//    armor_kalman a_kalman(0.2f,0.3f,1.f,0.f,0.f);
-#ifdef DEBUG_MODE
-    DataCollect dc(800, 720);
-    std::vector<cv::Scalar> color_list = {cv::Scalar(0, 0, 255),  // 红 pitch角
-                                          cv::Scalar(0, 255, 0)}; // 绿 yaw角
-    std::vector<float> angle_data = {50, 1};
-#endif // DEBUG_MODE
-
-    long t1 = 0;
-
-    //-----------------------------------【保存视频】--------------------------------------------
-    // brief：从配置文件中获取当前序号，序号自增
-    //------------------------------------------------------------------------------------------------
-    cv::VideoWriter vw_src;
-    if (main_setting->debug.b_save_result == true)
-    {
-        std::ostringstream s_src;
-
-        int n = main_setting->debug.n_save_result;
-        main_setting->debug.n_save_result++;
-        main_setting->writeOtherParam(PARAM_OTHER_PATH);
-
-        s_src << SAVE_VIDEO_DIR << "sentry_" << "src_" << n << ".avi";
-
-        vw_src.open(s_src.str(),
-                    cv::VideoWriter::fourcc('M', 'J', 'P', 'G'),
-                    80,
-                    cv::Size(SHOW_WIDTH / SHOW_RADIO, SHOW_HEIGHT / SHOW_RADIO),
-                    true);
-        if (vw_src.isOpened() == false)
-        {
-            std::cout << "Can't open *.avi file" << std::endl;
-            return;
-        }
-    }
-
-    //---------------------------------【工业相机/视频初始化】-------------------------------------
-    // brief：初始化主函数类
-    //-----------------------------------------------------------------------------------------
-#if (USE_VIDEO == 0)
     std::cout << "MVVideoCapture Init" << std::endl;
     if(-1 == MVVideoCapture::Init())
     {
         std::cout << "MVVideoCapture ERROR!!!" << std::endl;
-        return;
+        return 1;
     }
-    MVVideoCapture::Play();
-    MVVideoCapture::SetExposureTime(false, (main_setting->debug.expore_time)*0.7);
-    MVVideoCapture::SetLargeResolution(true);
-    std::cout << "MVVideoCapture Finished!" << std::endl;
-#elif (USE_VIDEO == 1)
-    VideoCapture cap(VIDEO_PATH);
-    if(!cap.isOpened()){
-        std::cout<< "  video path  error "<< std::endl;// check if we succeeded
-    }
-#endif  // USE_VIDEO
-
-    //--------------------------------------【循环】--------------------------------------------
-    // brief：
-    //-----------------------------------------------------------------------------------------
-    while(1)
-    {   
-        // 处理通信数据
-        ros::spinOnce();
-        // 设置参数滑动条
-#ifdef DEBUG_MODE
-        main_setting->setMainParam("主要设置");
-#ifdef DEBUG_CAMERA
-        main_setting->setCameraParam("camera");
-
-#endif // DEBUG_CAMERA
-        double t2 = (double)cv::getTickCount();
-#endif // DEBUG_MODE
-        
-        angle_slover.setRelationPoseCameraPTZ(main_setting->camera_param.x, main_setting->camera_param.y,
-                                              main_setting->camera_param.z, main_setting->camera_param.y_offset);
-        t1 = cv::getTickCount();
-
-        cv::Mat src;
-#if (USE_VIDEO == 0)
-        MVVideoCapture::GetFrame(src);
-        if(src.empty())
-        {
-            std::cout << "Image empty!" << std::endl;
-            continue;
-        }
-        cv::resize(src,src,cv::Size(SHOW_WIDTH,SHOW_HEIGHT));
-#elif (USE_VIDEO == 1)
-        cap >> src;
-        cv::resize(src, src, cv::Size(src.cols * 1, src.rows * 1));
-#endif  // USE_VIDEO
-
-
-
-#ifdef DEBUG_MODE
-        if(main_setting->debug.b_save_pic)
-            main_setting->grabImg(src, main_setting->debug.n_key_order, main_setting->debug.f_save_pic_inter * cv::getTickFrequency() / 1000.0);
-        if(main_setting->debug.b_show_src)
-        {
-            cv::namedWindow("src");
-            cv::imshow("src", src);
-        }
-        else
-        {
-            if(-1 != cv::getWindowProperty("src", 1))
-                cv::destroyWindow("src");
-        }
-#endif  // DUBUG_MODE
-
-////         获取裁判系统敌方装甲板颜色(比赛前切记打开)
-//        if(unpack_data->getStm2PcMesg()->stm32_info_data.enemy_color == 1)
-//            main_setting->enemy_color = red;
-//        else if(unpack_data->getStm2PcMesg()->stm32_info_data.enemy_color == 2)
-//            main_setting->enemy_color = blue;
-
-        // if(pc_send_mesg.robot_color == 1)
-        //     main_setting->enemy_color = red;
-        // else if(pc_send_mesg.robot_color == 2)
-        //     main_setting->enemy_color = blue;
-
-////         接收电控发送的模式切换(比赛前切记打开)
-//        if(!std::isnan(unpack_data->getStm2PcMesg()->stm32_info_data.main_mode))
-//            main_setting->main_mode = unpack_data->getStm2PcMesg()->stm32_info_data.main_mode;
-
-        // main_setting->main_mode = pc_send_mesg.task_mode;
-
-//#ifdef DEBUG_MODE
-//        std::cout << "main_mode:          " << unpack_data->getStm2PcMesg()->stm32_info_data.main_mode << std::endl;
-//        std::cout << "enemy_color:        " << unpack_data->getStm2PcMesg()->stm32_info_data.enemy_color << std::endl;
-//        std::cout << "is_left:            " << unpack_data->getStm2PcMesg()->stm32_info_data.is_left << std::endl;
-//        std::cout << "run_left:           " << unpack_data->getStm2PcMesg()->stm32_info_data.run_left << std::endl;
-//        std::cout << "is_top:             " << unpack_data->getStm2PcMesg()->stm32_info_data.is_top << std::endl;
-        std::cout << "pitch               " << /*unpack_data->getStm2PcMesg()->stm32_info_data.pitch*/pc_send_mesg.robot_pitch << std::endl;
-        std::cout << "yaw:                " << /*unpack_data->getStm2PcMesg()->stm32_info_data.yaw*/pc_send_mesg.robot_yaw << std::endl;
-//        std::cout << "pitch_offset:       " << unpack_data->getStm2PcMesg()->stm32_info_data.pitch_offset << std::endl;
-//        std::cout << "yaw_offset:         " << unpack_data->getStm2PcMesg()->stm32_info_data.yaw_offset << std::endl;
- //       std::cout << "bullet_spd:         " << unpack_data->getStm2PcMesg()->stm32_info_data.bullet_spd << std::endl;
-//#endif
-
-        static int flag, lost_flag;  // 标志，意味着进入自瞄模式第几次成功进入，切换其他模式flag归零
-
-        //-----------------------------------【自瞄模式】--------------------------------------------
-        // brief：
-        // 1.识别灯条
-        // 2.获取所有甲板四个点位置
-        // 3.选择最优的甲板（根据得分、滤波、插值或爬波函数）
-        // 4.解算角度
-        // 5.绘制检测信息与波形
-        // 6.串口发送
-        //-----------------------------------------------------------------------------------------
-        if(main_setting->main_mode == armor_mode)
-        {
-#ifdef DEBUG_MODE
-            armor_setting->setArmorParam(main_setting);
-#endif // DEBUG_MODE
-            armor.armorDetecProc(src, angle_slover, pack_data, unpack_data, serial, t1, gc, armor, flag, lost_flag/*,a_kalman*/);
-            main_setting->main_mode_flag = 0;  // 确保模式更改的时候冲突参数的刷新
-        }
-
-
-#ifdef DEBUG_MODE
-        if(main_setting->debug.b_show_dc)
-        {
-            angle_data.clear();
-            angle_data = {/*unpack_data->getStm2PcMesg()->stm32_info_data.pitch * 10*/armor.pit_final * 10, armor.yaw_final * 10};
-//            angle_data = {armor.L_v * 2, 0};
-            cv::namedWindow("pitch_and_yaw");
-            dc.dataCollectProc(angle_data, color_list, "pitch_and_yaw");
-        }
-        else
-        {
-            if(-1 != cv::getWindowProperty("pitch_and_yaw", 1))
-                cv::destroyWindow("pitch_and_yaw");
-        }
-#endif // DEBUG_MODE
-
-#ifdef DEBUG_MODE
-        main_setting->debug.n_key_order = cv::waitKey(1);
-        if(tolower(main_setting->debug.n_key_order) == KEY_SAVE_PARAM)
-        {
-            main_setting->writeOtherParam(PARAM_OTHER_PATH);
-            if(main_setting->main_mode == armor_mode)
-                armor_setting->writeArmorParam(PARAM_ARMOR_PATH);
-        }
-        t2 = ((double)cv::getTickCount() - t2) / cv::getTickFrequency();
-        armor.fps = 1.0 / t2;
-        if(main_setting->debug.b_show_fps)
-            std::cout << "FPS:       " << armor.fps << std::endl;
-#if (USE_VIDEO == 1)
-        cv::waitKey(33);
-#endif // USE_VIDEO
-#else // DEBUG_MODE
-        cv::waitKey(1);
-#endif // DEBUG_MODE
-        if(main_setting->debug.b_save_result == true)
-        {
-            vw_src << src;
-            if(main_setting->debug.n_key_order == KEY_SAVE_RESULT)
-                vw_src.release();
-        }
+    else{
+        MVVideoCapture::Play();
+        MVVideoCapture::SetExposureTime(false, (/*main_settings.debug.expore_time*/8000));//bu yao zi dong tiao bao guang!!!
+        MVVideoCapture::SetLargeResolution(true);
+        std::cout << "MVVideoCapture Finished!" << std::endl;
     }
 
-    serial->closeDevice();
+    detectThread(&aim_data);
+#ifdef DEBUG_MODE
+//      while(1){
+//        cv::Mat src_clone=src.clone();
+//        //if(main_settings.debug.src==1) cv::imshow("src",src);
+//        if(main_settings.debug.detect_armor==1){
+//          //添加画图处理
+//        }
+//        if(main_settings.debug.armor_chosen){
+//          //添加画图处理
+//        }
+//        if(main_settings.debug.predict_point){
+//          //
+//        }
+//        if(main_settings.debug.inaccuracy_point){
 
-#if (USE_VIDEO == 0)
-    MVVideoCapture::Stop();
-    MVVideoCapture::Uninit();
-#endif  // USE_VIDEO
+//        }
+//        if(main_settings.debug.dc_pitch){
+
+//        }
+//        if(main_settings.debug.dc_yaw){
+
+//        }
+//      }
+#endif
+    //serial.closeDevice();
+    return 0;
 }

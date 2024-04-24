@@ -17,8 +17,9 @@ ros::Time current_time, last_time;
 int callback_flag = 0;
 double yaw_angle,pitch_angle,roll_angle,last_yaw_angle;
 tf::Quaternion RQ2;
-float trans_x = 0, trans_y = 0, trans_z = 0;
-float rot_w = 1.0, rot_x = 0.0, rot_y = 0.0, rot_z = 0.0;
+float trans_x = -0.14, trans_y = 0, trans_z = -0.15;
+// float rot_w = 1, rot_x = 0.0, rot_y = -0.0, rot_z = 0.0;
+float rot_w = 0.9277, rot_x = 0.0, rot_y = -0.3732, rot_z = 0.0;
 void odom_callback(const nav_msgs::Odometry::ConstPtr &msg)
 {
     static tf::TransformBroadcaster odom_broadcaster;
@@ -72,7 +73,7 @@ void odom_callback(const nav_msgs::Odometry::ConstPtr &msg)
 
     odom_move_base.header = msg->header;
     odom_move_base.child_frame_id = "base_link";
-    odom_move_base.header.frame_id = "odom";
+    odom_move_base.header.frame_id = "camera_init";
     odom_move_base.pose.pose.position.x = base_transform.getOrigin().getX();
     odom_move_base.pose.pose.position.y = base_transform.getOrigin().getY();
     odom_move_base.pose.pose.position.z = 0;

@@ -1,11 +1,18 @@
 #ifndef PNPSOLVER_H
 #define PNPSOLVER_H
+//以下四个参数的大小与正负号与电机和相机的安装方向有关，尽量不要改公式里的符号，或者自己区分
+const double PCBD=0;  //
+const double PBMD=0; //13.7
+
+const double YCBD=0.1;//8
+const double YBMD=0.1;//8
+
 
 #include "auto_aim/Settings/Settings.h"
-#include "auto_aim/AngleSolver/GravityCompensateResolve.h"
+#include<eigen3/Eigen/Dense>
 #include <math.h>
-//#include <QTextStream>
-//#include <QFile>
+
+
 
 
 
@@ -13,6 +20,7 @@ class AngleSolver
 {
 public:
     AngleSolver(const char *camera_param_file_name, double z_scale = 1.0);
+    AngleSolver();
 
     /**
      * @brief  设置相机安装参数
@@ -32,22 +40,23 @@ public:
      * @date   2018.9.21
      */
     void setTargetSize(double width, double height);
+    void setTargetSize(double lenth);//能量机关
 
     /**
      * @brief  解析角度
      * @author 梁尧森
      * @date   2018.9.21
      */
-    bool getAngle(std::vector<cv::Point2f> target2d, double bullet_speed,
-                  double current_ptz_angle=0, const cv::Point2f &offset=cv::Point2f());
+
+    bool getAngle(cv::Point2f *target2d,Eigen::Vector3d &tvec,Eigen::Vector3d &rvec);
+    bool getAngle(std::vector<cv::Point2f> target2d,Eigen::Vector3d &tvec);
 
     /**
      * @brief  solvePnP
      * @author 参与开发人员
      * @date   2018-
      */
-    void solvePnP4Points(const std::vector<cv::Point2f> &points2d,
-                         cv::Mat &rot, cv::Mat &trans);
+    void solvePnP4Points(const std::vector<cv::Point2f> points2d, Eigen::Vector3d &trans,Eigen::Vector3d &rvec);
 
     /**
      * @brief  相机坐标转换到PTZ坐标
@@ -75,9 +84,22 @@ public:
      */
     void rectPnpSolver(const char *camera_param_file_name);
 
+    /**
+     * @brief  获取光轴中心
+     * @return 光轴中心
+     * @author 梁尧森
+     * @date   2018.9.21
+     */
+    cv::Point2f getImageCenter();
 
-
-
+    /**
+     * @brief 获取相对角度
+     * @param 目标矩形
+     * @param 正式长宽比
+     * @param 补偿
+     */
+    bool getAngleWithRectify(const cv::RotatedRect &rect, double wh_ratio,
+                             const cv::Point2f &offset = cv::Point2f());
 
     /**
      * @brief  获取矩形四个角点的坐标
@@ -87,7 +109,28 @@ public:
     void getTarget2dPoinstion(const cv::RotatedRect &rect, std::vector<cv::Point2f> &target2d,
                               const cv::Point2f &offset);
 
+    /**
+     * @brief  无重力相对角解算
+     * @param  目标坐标点
+     * @author 参与开发人员
+     * @date   2018-
+     */
+    bool getAngleWithoutGavity(std::vector<cv::Point2f> target2d);
 
+    /**
+     * @brief  能量机关专用PnP解算
+     * @author 参与开发人员
+     * @date   2020-
+     */
+    void solvePnP4Points_rune(const std::vector<cv::Point2f> &points2d, cv::Mat &rot, cv::Mat &trans);
+
+    /**
+     * @brief 无重力补偿
+     * @author 参与开发人员
+     * @date   2020-
+     */
+    void adjustPTZ2BarrelWithoutGavity(const cv::Mat &pos_in_ptz,
+                                       double &angle_x, double &angle_y);
 
     /**
      * @brief
@@ -123,7 +166,14 @@ public:
      * @author 吴凯杰
      * @date   2022-
      */
-    void getDistancePnP(const std::vector<cv::Point2f> &points2d,double &dist);
+    void getDistanceDanmuPnP(const std::vector<cv::Point2f> &points2d,double &dist);
+
+
+    void Camera2Moto(double moto_pitch, double moto_yaw, Eigen::Vector3d tvec, Eigen::Vector3d ctvec,double &moto_move_pitch, double &moto_move_yaw, double v, double g);
+
+    double trajectoryEstimation(double ground_dist,double height,double v,double g,double &fly_time/*顺便更正预测时间*/);
+
+    void coordinary_transformation(double moto_pitch, double moto_yaw, Eigen::Vector3d &tvec, Eigen::Vector3d rvec, Eigen::Vector3d &moto_tvec);
 
 public:
     cv::Mat cam_matrix;                 // 内参矩阵

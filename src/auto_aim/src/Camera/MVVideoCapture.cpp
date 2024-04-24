@@ -14,7 +14,7 @@ int                     MVVideoCapture::channel = 3;
 tSdkCameraCapbility     MVVideoCapture::tCapability;      //设备描述信息
 tSdkFrameHead           MVVideoCapture::sFrameInfo;
 unsigned char           *MVVideoCapture::pbyBuffer = NULL;
-unsigned char           *MVVideoCapture::g_pRgbBuffer[2] = {NULL, NULL};     //处理后数据缓存区
+unsigned char           *MVVideoCapture::g_pRgbBuffer[2] = {NULL,NULL};     //处理后数据缓存区
 int                     MVVideoCapture::ready_buffer_id = 0;
 bool                    MVVideoCapture::stopped = false;
 bool                    MVVideoCapture::updated = false;
@@ -255,6 +255,7 @@ int MVVideoCapture::Read()
             CameraImageProcess(hCamera, pbyBuffer, g_pRgbBuffer[(ready_buffer_id+1)%2], &sFrameInfo);
             ready_buffer_id = (ready_buffer_id + 1)%2;
             updated = true;
+
             CameraReleaseImageBuffer(hCamera, pbyBuffer);
         }
     }
@@ -264,16 +265,20 @@ int MVVideoCapture::GetFrame(cv::Mat &frame)
 {
     if (frame.cols != sFrameInfo.iWidth || frame.rows != sFrameInfo.iHeight)
     {
-//        printf("GetFrame: resize frame !\n");
+        //printf("GetFrame: resize frame !\n");
         frame.create(sFrameInfo.iHeight, sFrameInfo.iWidth, CV_8UC3);
     }
 //    TIME_BEGIN();
     while (!updated)
     {
-        usleep(1000);
+        usleep(10000);
     }
 //    TIME_END("Wait for camera data");
-    memcpy(frame.data, g_pRgbBuffer[ready_buffer_id], frame.cols*frame.rows*3);
+    // std::cout<<tCapability.sResolutionRange.iHeightMax*tCapability.sResolutionRange.iWidthMax*3<<std::endl;
+    memcpy(frame.data, g_pRgbBuffer[ready_buffer_id],frame.cols*frame.rows*3);
+
+//    if(!frame.empty())
+//    cv::imshow("frame",frame);
     updated = false;
     return 0;
 }

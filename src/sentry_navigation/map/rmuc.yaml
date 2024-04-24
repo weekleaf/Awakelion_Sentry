@@ -1,4 +1,4 @@
-image: /home/rm/Awakelion_sentry/src/sentry_navigation/map/rmuc.pgm
+image: /home/rm/git_repository/awakelion_navigation/src/sentry_navigation/map/rmuc.pgm
 resolution: 0.050000
 origin: [-3.6000000,-2.60000, 0]
 negate: 0

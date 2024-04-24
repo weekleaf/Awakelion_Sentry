@@ -19,7 +19,7 @@ public:
     static int    GetFrame(cv::Mat& frame);
     static int    Stop();
     static int    Uninit();
-    static int    SetExposureTime(bool auto_exp, double exp_time = 10000);
+    static int    SetExposureTime(bool auto_exp, double exp_time = 1000);
     static double GetExposureTime();
     static int    SetLargeResolution(bool if_large_resolution);
     static cv::Size   GetResolution();

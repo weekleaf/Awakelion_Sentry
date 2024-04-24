@@ -1,0 +1,4 @@
+<launch>
+    <!-- <include file="$(find robot_driver)/launch/robot_driver.launch"/> -->
+    <node name="auto_aim" type="auto_aim_node" pkg="auto_aim"/>
+</launch>

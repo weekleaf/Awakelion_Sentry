@@ -1,11 +1,13 @@
 base_global_planner: global_planner/GlobalPlanner
+# base_local_planner: dwa_local_planner/DWAPlannerROS
+# base_local_planner: teb_local_planner/TebLocalPlannerROS
 base_local_planner: eband_local_planner/EBandPlannerROS
 
-planner_frequency: 3.0
-planner_patience: 3.0
+planner_frequency: 1.0
+planner_patience: 5.0
 planner_max_retries: -1
 
-controller_frequency: 10.0
+controller_frequency: 30.0
 controller_patience: 10.0
 controller_max_retries: -1
 

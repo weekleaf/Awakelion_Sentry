@@ -14,11 +14,12 @@ find_package(catkin REQUIRED COMPONENTS
   tf
   roscpp
   rospy
-  # robot_msgs
   std_msgs
   std_srvs
   actionlib
-  PCL
+  pcl_ros
+  robot_driver
+  # PCL
 )
 
 ## System dependencies are found with CMake's conventions
@@ -145,6 +146,10 @@ add_library(odom_trans
 # )
 add_library(pcdfilter
   src/pointcloud_filter.cpp
+)
+add_library(signpoint
+  include/sign_point.h
+  src/sign_point.cpp
 )
 # add_library(init_pose_change
 #   src/init_pose_change.cpp

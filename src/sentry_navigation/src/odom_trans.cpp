@@ -17,7 +17,7 @@ ros::Time current_time, last_time;
 int callback_flag = 0;
 double yaw_angle,pitch_angle,roll_angle,last_yaw_angle;
 tf::Quaternion RQ2;
-float trans_x = -0.14, trans_y = 0, trans_z = -0.15;
+float trans_x = -0.12832, trans_y = -0.08874, trans_z = -0.1543;
 // float rot_w = 1, rot_x = 0.0, rot_y = -0.0, rot_z = 0.0;
 float rot_w = 0.9277, rot_x = 0.0, rot_y = -0.3732, rot_z = 0.0;
 void odom_callback(const nav_msgs::Odometry::ConstPtr &msg)

@@ -233,52 +233,53 @@ void AngleSolver::getDistanceDanmu(std::vector<cv::Point2f>armor_rect, double &d
 
 }
 
+
 void AngleSolver::Camera2Moto(double moto_pitch, double moto_yaw , Eigen::Vector3d tvec,Eigen::Vector3d ctvec, double &moto_move_pitch, double &moto_move_yaw,double v,double g)
 {
-//     double BMD=3.3;
-//     double CBD=11.35;
-//     v*=100.0;
-//     g*=100.0;//输入用国际单位制，但是运算建议用量纲长度cm，时间用s即可
-//     moto_pitch/=(180.0/M_PI);//电控收发都是角度制，需要转成弧度制处理
+    //tvec(0,0)=-tvec(0,0);
 
-//     double z0=sqrt(tvec(2,0)*tvec(2,0)+tvec(0,0)*tvec(0,0));//水平距离
-//     double y0=tvec(1,0);//高度
-//     double d=sqrt(pow(z0,2)+pow(y0,2));
-//     double arfa=asin(BMD/d);
-//     double theta=atan(y0/z0);
-//     double beita=M_PI/2-arfa;
-//     double temp_pitch=beita+theta-M_PI/2;
+    v*=100.0;
+    g*=100.0;//输入用国际单位制，但是运算建议用量纲长度cm，时间用s即可
+    moto_pitch/=(180.0/M_PI);//电控收发都是角度制，需要转成弧度制处理
 
-//     double h=tvec(1,0)-BMD*cos(temp_pitch);
-//     double dist=z0+BMD*sin(temp_pitch);
-//     //std::cout<<"dist"<<dist<<std::endl;
-//     //std::cout<<"h"<<h<<std::endl;
+    double z0=sqrt(tvec(1,0)*tvec(1,0)+tvec(0,0)*tvec(0,0));//水平距离
+    double h=-tvec(2,0)/*-PBMD*cos(temp_pitch)*/;
+    double dist=z0/*+PBMD*sin(temp_pitch)*/;
+
+    dist=cos(moto_pitch)*dist-sin(moto_pitch)*h;
+    h=cos(moto_pitch)*h+sin(moto_pitch)*dist;
+
+    //std::cout<<"dist"<<dist<<std::endl;
+    //std::cout<<"h"<<h<<std::endl;
 
 
-// ///////////////////////////////
-//     double z=h;//y
-//     double y=dist;//这里的y是水平距离，z是竖直距离，不要搞混,因为公式太长不想改了...
-//     //y=sqrt(pow(x,2)+pow(y,2));
-//     //上述已转完坐标系
 
-//      double k;//zy枪管
-//      std::cout<<"z"<<z<<" "<<"y"<<y<<std::endl;
-//      double vz1,vy1,fly_time;
-//      fly_time = sqrt(1.0 / (g * g) * (g * z + sqrt(v * v * v * v - (g * g) * (y * y) - g * (v * v) * z * 2.0) - v * v) * -2.0);
 
-//      if (std::isnan(fly_time)) {
-//          k = z / y;
-//      }
-//      else {
-//          vz1 = +(g * (y * y) * sqrt(-1.0 / (g * g) * (g * z * 2.0 + sqrt(v * v * v * v - (g * g) * (y * y) - g * (v * v) * z * 2.0) * 2.0 - (v * v) * 2.0)) * 2.0 - g * (z * z) * sqrt(-1.0 / (g * g) * (g * z * 2.0 + sqrt(v * v * v * v - (g * g) * (y * y) - g * (v * v) * z * 2.0) * 2.0 - (v * v) * 2.0)) * 2.0 - (g * g) * z * pow(-1.0 / (g * g) * (g * z * 2.0 + sqrt(v * v * v * v - (g * g) * (y * y) - g * (v * v) * z * 2.0) * 2.0 - (v * v) * 2.0), 3.0 / 2.0) + (v * v) * z * sqrt(-1.0 / (g * g) * (g * z * 2.0 + sqrt(v * v * v * v - (g * g) * (y * y) - g * (v * v) * z * 2.0) * 2.0 - (v * v) * 2.0)) * 4.0) / ((y * y) * 4.0 + (z * z) * 4.0);
-//          vy1 = -((g * g) * y * pow(-1.0 / (g * g) * (g * z * 2.0 + sqrt(v * v * v * v - (g * g) * (y * y) - g * (v * v) * z * 2.0) * 2.0 - (v * v) * 2.0), 3.0 / 2.0) - (v * v) * y * sqrt(-1.0 / (g * g) * (g * z * 2.0 + sqrt(v * v * v * v - (g * g) * (y * y) - g * (v * v) * z * 2.0) * 2.0 - (v * v) * 2.0)) * 4.0 + g * y * z * sqrt(-1.0 / (g * g) * (g * z * 2.0 + sqrt(v * v * v * v - (g * g) * (y * y) - g * (v * v) * z * 2.0) * 2.0 - (v * v) * 2.0)) * 4.0) / ((y * y) * 4.0 + (z * z) * 4.0);
-//          k = vz1 / vy1;
+/////////////////////////////////
+    double z=h;//y
+    double y=dist;//这里的y是水平距离，z是竖直距离，不要搞混,因为公式太长不想改了...
+    //y=sqrt(pow(x,2)+pow(y,2));
+    //上述已转完坐标系
 
-//      }//未加空阻
-// //     k=z/y;
-// ////////////////////////////////////////////////////
-//     double angle=atan(k);
-//     double moto_to_pitch=angle;
+     double k;//zy枪管
+     std::cout<<"z"<<z<<" "<<"y"<<y<<std::endl;
+     double vz1,vy1,fly_time;
+     fly_time = sqrt(1.0 / (g * g) * (g * z + sqrt(v * v * v * v - (g * g) * (y * y) - g * (v * v) * z * 2.0) - v * v) * -2.0);
+
+     if (std::isnan(fly_time)) {
+         k = z / y;
+     }
+     else {
+         vz1 = +(g * (y * y) * sqrt(-1.0 / (g * g) * (g * z * 2.0 + sqrt(v * v * v * v - (g * g) * (y * y) - g * (v * v) * z * 2.0) * 2.0 - (v * v) * 2.0)) * 2.0 - g * (z * z) * sqrt(-1.0 / (g * g) * (g * z * 2.0 + sqrt(v * v * v * v - (g * g) * (y * y) - g * (v * v) * z * 2.0) * 2.0 - (v * v) * 2.0)) * 2.0 - (g * g) * z * pow(-1.0 / (g * g) * (g * z * 2.0 + sqrt(v * v * v * v - (g * g) * (y * y) - g * (v * v) * z * 2.0) * 2.0 - (v * v) * 2.0), 3.0 / 2.0) + (v * v) * z * sqrt(-1.0 / (g * g) * (g * z * 2.0 + sqrt(v * v * v * v - (g * g) * (y * y) - g * (v * v) * z * 2.0) * 2.0 - (v * v) * 2.0)) * 4.0) / ((y * y) * 4.0 + (z * z) * 4.0);
+         vy1 = -((g * g) * y * pow(-1.0 / (g * g) * (g * z * 2.0 + sqrt(v * v * v * v - (g * g) * (y * y) - g * (v * v) * z * 2.0) * 2.0 - (v * v) * 2.0), 3.0 / 2.0) - (v * v) * y * sqrt(-1.0 / (g * g) * (g * z * 2.0 + sqrt(v * v * v * v - (g * g) * (y * y) - g * (v * v) * z * 2.0) * 2.0 - (v * v) * 2.0)) * 4.0 + g * y * z * sqrt(-1.0 / (g * g) * (g * z * 2.0 + sqrt(v * v * v * v - (g * g) * (y * y) - g * (v * v) * z * 2.0) * 2.0 - (v * v) * 2.0)) * 4.0) / ((y * y) * 4.0 + (z * z) * 4.0);
+         k = vz1 / vy1;
+
+     }//未加空阻
+//     k=z/y;
+//////////////////////////////////////////////////////
+      double angle=atan(k);
+    //double pitch=atan(tvec(1,0)/tvec(2,0));
+      double moto_to_pitch=angle;
 
 //    if(z<0&&y>0){
 //        //moto_to_pitch+=M_PI/2;
@@ -298,114 +299,146 @@ void AngleSolver::Camera2Moto(double moto_pitch, double moto_yaw , Eigen::Vector
 //        std::cout<<1<<std::endl;
 //    }
 
-    moto_move_pitch=atan(ctvec(1,0)/ctvec(2,0));
-//    moto_move_pitch=moto_to_pitch/*-abs(tvec(1,0))/tvec(1,0)*M_PI/2.0*/;//电控收角度制，发给他们前需要转成角度制
+      //std::cout<<"moto_to_pitch:"<<moto_to_pitch*(180.0/M_PI)<<std::endl;
+
+    moto_move_pitch=moto_to_pitch-moto_pitch/*pitch*//*moto_to_pitch-moto_pitch*//*-abs(tvec(1,0))/tvec(1,0)*M_PI/2.0*/;//电控收角度制，发给他们前需要转成角度制
     moto_move_pitch*=(180.0/M_PI);
 
 
-    //以下都是yaw的与pitch无关
+//    //以下都是yaw的与pitch无关
 
-//     int moto_yaw_int=floor(moto_yaw);
-//     double moto_yaw_flo=moto_yaw-moto_yaw_int;
+//    int moto_yaw_int=floor(moto_yaw);
+//    double moto_yaw_flo=moto_yaw-moto_yaw_int;
 
-//     if(moto_yaw_int>=0) moto_yaw_int%=360;
-//     else if(moto_yaw_int<0){
-//         moto_yaw_int=moto_yaw_int%360;
-//         if(moto_yaw_int<0) moto_yaw_int+=360;
-//     }
-//     moto_yaw=moto_yaw_int+moto_yaw_flo;
-//     std::cout<<"moto_yaww"<<moto_yaw<<std::endl;
-//     //以上操作防电控>=360,算法所需极坐标系角度范围[0,360);
-//     moto_yaw/=(180.0/M_PI);//电控收发都是角度制，需要转成弧度制处理
-//     //std::cout<<"moto_yaw"<<moto_yaw<<std::endl;
-
-//     double _x2=tvec(0,0);
-//     double _z2=abs(tvec(2,0))/tvec(2,0)*sqrt(pow(tvec(2,0),2)+pow(tvec(1,0),2))/*tvec(2,0)*/;//?????
-
-//     //std::cout<<_x2<<" "<<_z2<<" "<<atan(_x2/_z2)<<std::endl;
-
-//     double moto_to_yaw=atan(_z2/_x2)+M_PI/2;
-
-//     if(_z2<0&&_x2>0){
-//         moto_to_yaw+=M_PI;
-//         std::cout<<4<<std::endl;
-//     }
-//     else if(_z2<0&&_x2<0){
-//         //moto_to_yaw+=M_PI ;
-//         std::cout<<3<<std::endl;
-//     }
-
-//    else if(_z2>0&&_x2<0){
-//        //moto_to_yaw+=M_PI;
-//       std::cout<<2<<std::endl;
+//    if(moto_yaw_int>=0) moto_yaw_int%=360;
+//    else if(moto_yaw_int<0){
+//        moto_yaw_int=moto_yaw_int%360;
+//        if(moto_yaw_int<0) moto_yaw_int+=360;
 //    }
-//     else{
-//         moto_to_yaw+=M_PI;
-//         std::cout<<1<<std::endl;
-//     }
+//    moto_yaw=moto_yaw_int+moto_yaw_flo;
+//    std::cout<<"moto_yaww"<<moto_yaw<<std::endl;
+    //以上操作防电控>=360,算法所需极坐标系角度范围[0,360);
+    moto_yaw+=180.0;
+    moto_yaw/=(180.0/M_PI);//电控收发都是角度制，需要转成弧度制处理
+//    std::cout<<"moto_yaw"<<moto_yaw<<std::endl;
 
-//    std::cout<<"moto_to_yaw!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<moto_to_yaw*(180.0/M_PI)<<std::endl;
+    double _x2=tvec(0,0);
+    double _z2=/*abs(tvec(2,0))/tvec(2,0)*sqrt(pow(tvec(2,0),2)+pow(tvec(1,0),2))*/tvec(1,0);//?????
 
-    moto_move_yaw=-atan(ctvec(0,0)/ctvec(2,0));
+//    //std::cout<<_x2<<" "<<_z2<<" "<<atan(_x2/_z2)<<std::endl;
 
-    //moto_move_yaw=(moto_to_yaw);
-    moto_move_yaw*=(180.0/M_PI);//已转成角度制//符号协商
-    //std::cout<<"moto_move_yaw!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<moto_move_yaw<<std::endl;
+    double moto_to_yaw=atan(_x2/_z2);
+
+//    if(_z2<0&&_x2>0){
+//        moto_to_yaw+=M_PI*2;
+//        std::cout<<4<<std::endl;
+//    }
+//    else if(_z2<0&&_x2<0){
+//        moto_to_yaw+=M_PI ;
+//        std::cout<<3<<std::endl;
+//    }
+
+//   else if(_z2>0&&_x2<0){
+//       moto_to_yaw+=M_PI;
+//      std::cout<<2<<std::endl;
+//   }
+//    else{
+////        moto_to_yaw+=M_PI;
+//        std::cout<<1<<std::endl;
+//    }
+
+//   std::cout<<"moto_to_yaw!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<moto_to_yaw*(180.0/M_PI)<<std::endl;
+
+
+      moto_move_yaw=(moto_to_yaw)/*-moto_yaw*/;
+      moto_move_yaw*=(180.0/M_PI);//已转成角度制//符号协商
+
+//    //std::cout<<"moto_move_yaw!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<moto_move_yaw<<std::endl;
 
 //    if(abs(moto_move_yaw)>300.0){
 //        //std::cout<<"moto_move_yaw error!!!!!!!!"<<std::endl;
 //        moto_move_yaw=-moto_move_yaw/abs(moto_move_yaw)*360.0+moto_move_yaw;
 //    }
-//    //需要相机和电机的位置,不懂就去翻机械原理！！！(或者理论力学动力学部分)
+//    moto_move_yaw-=180.0;
+    //需要相机和电机的位置,不懂就去翻机械原理！！！(或者理论力学动力学部分)
 
 
 
 //    moto_move_pitch=atan((tvec(1,0)+5)/tvec(2,0))*-(180.0/M_PI);
 //    moto_move_yaw=atan(tvec(0,0)/tvec(2,0))*-(180.0/M_PI);
-
+//    moto_move_yaw=-atan(tvec(0,0)/tvec(2,0));
+//    moto_move_yaw*=(180/M_PI);
 }
 void AngleSolver::coordinary_transformation(double moto_pitch, double moto_yaw, Eigen::Vector3d &tvec, Eigen::Vector3d rvec,Eigen::Vector3d &moto_tvec)
-{
+{    
+    Eigen::Matrix3d C2IR;
+    C2IR<<  -0.99730636, 0.00279714, 0.07329525,
+            -0.07329215, 0.00119233,  -0.99730980,
+            -0.00287700, -0.99999538, -0.00098411;
 
-//     Eigen::Vector3d oc_tvec;
-//     oc_tvec<<tvec(0,0),-tvec(1,0),tvec(2,0);
-//     std::cout<<"oc_tvec"<<oc_tvec<<std::endl;
+//    C2IR<<   0.99994068,  0.00297684, -0.01047735,
+//            -0.01045763, -0.00656698, -0.99992375,
+//            -0.00304542,  0.99997401, -0.00653546;
 
-//     double a=moto_pitch/(180.0/M_PI);
-//     double b=moto_yaw/(180.0/M_PI);//此处符号是因为英雄坐标系与步兵不一样，到时候根据情况协商
-// //    double rotationAngle2 = a;
-// //    Eigen::Vector3d rotationAxis2(1.0, 0.0, 0.0);  // 绕X轴旋转
-// //    rotationAxis2.normalize();
+    Eigen::Vector3d C2IT;
+
+    C2IT << 0.04595337,
+            -0.19273146,
+           0.00048865;
+
+//    C2IT <<-0.01242922,
+//           -0.02052764,
+//           -0.12111264;
+
+
+    Eigen::Vector3d oc_tvec;
+    oc_tvec<<-tvec(0,0),-tvec(1,0),tvec(2,0);
+//    std::cout<<"oc_tvec"<<oc_tvec<<std::endl;
+
+    double a=-moto_pitch/(180.0/M_PI);
+    double b=moto_yaw/(180.0/M_PI);//此处符号是因为英雄坐标系与步兵不一样，到时候根据情况协商
+//    double rotationAngle2 = a;
+//    Eigen::Vector3d rotationAxis2(1.0, 0.0, 0.0);  // 绕X轴旋转
+//    rotationAxis2.normalize();
   
-// //    double rotationAngle1 = b;
-// //    Eigen::Vector3d rotationAxis1(0.0, 1.0, 0.0);  // 绕Y轴旋转
-// //    rotationAxis1.normalize();
+//    double rotationAngle1 = b;
+//    Eigen::Vector3d rotationAxis1(0.0, 1.0, 0.0);  // 绕Y轴旋转
+//    rotationAxis1.normalize();
   
-// //    Eigen::AngleAxisd rotation1(rotationAngle1, rotationAxis1);
-// //    Eigen::AngleAxisd rotation2(rotationAngle2, rotationAxis2);
+//    Eigen::AngleAxisd rotation1(rotationAngle1, rotationAxis1);
+//    Eigen::AngleAxisd rotation2(rotationAngle2, rotationAxis2);
   
-// //    Eigen::Matrix3d rotationMatrix1 = rotation1.toRotationMatrix();
-// //    Eigen::Matrix3d rotationMatrix2 = rotation2.toRotationMatrix();
+//    Eigen::Matrix3d rotationMatrix1 = rotation1.toRotationMatrix();
+//    Eigen::Matrix3d rotationMatrix2 = rotation2.toRotationMatrix();
 
-//     Eigen::Matrix3d rotationMatrix1;
-//     Eigen::Matrix3d rotationMatrix2;
-//     rotationMatrix1<<1,0,0,0,cos(a),sin(a),0,-sin(a),cos(a);
-//     rotationMatrix2<<cos(b),0,-sin(b),0,1,0,sin(b),0,cos(b);
+    Eigen::Matrix3d rotationMatrix1;
+    Eigen::Matrix3d rotationMatrix2;
+    rotationMatrix1<<1.0,0.0,0.0,
+            0.0,-sin(a),cos(a),
+            0.0,cos(a),sin(a);
+
+    rotationMatrix2<<cos(b),0.0,-sin(b),
+            sin(b),0.0,cos(b),
+            0.0,1.0,0.0;
+
+    moto_tvec=/*rotationMatrix2*rotationMatrix1**/C2IR*oc_tvec + C2IT;
 
 
-//     double arfa=a+atan(PBMD/PCBD);
-//     double l=sqrt(pow(PCBD,2)+pow(PBMD,2));
-//     Eigen::Vector3d camera_tvec;
-// //    double xc=PCBD*cos(a)*sin(b);
-// //    double zc=PCBD*cos(a)*cos(b);
-// //    double yc=PCBD*sin(a);
-//     double xc=l*cos(arfa)*cos(b);
-//     double zc=l*cos(arfa)*sin(b);
-//     double yc=l*sin(arfa);
-//     camera_tvec<<xc,yc,zc;
 
-//     moto_tvec=camera_tvec + rotationMatrix1*rotationMatrix2*oc_tvec;
-//    //std::cout<<"moto_tvec"<<moto_tvec<<std::endl;
+//    double arfa=a+atan(PBMD/PCBD);
+//    double l=sqrt(pow(PCBD,2)+pow(PBMD,2));
+//    Eigen::Vector3d camera_tvec;
+////    double xc=PCBD*cos(a)*sin(b);
+////    double zc=PCBD*cos(a)*cos(b);
+////    double yc=PCBD*sin(a);
+//    double xc=l*cos(arfa)*cos(b);
+//    double zc=l*cos(arfa)*sin(b);
+//    double yc=l*sin(arfa);
+//    camera_tvec<<xc,yc,zc;
+
+//    moto_tvec=camera_tvec + rotationMatrix1*rotationMatrix2*oc_tvec;
+//    moto_tvec=oc_tvec;
+//    std::cout<<"moto_tvec"<<moto_tvec<<std::endl;
 
 //    //moto_tvec<<tvec(0,0),-tvec(1,0),tvec(2,0);
 
@@ -431,7 +464,7 @@ void AngleSolver::coordinary_transformation(double moto_pitch, double moto_yaw, 
 
 //    moto_tvec<<x,y,z;
 
-    moto_tvec=tvec;
 
+//    moto_tvec=I2CT+I2CR*oc_tvec;
 }
 

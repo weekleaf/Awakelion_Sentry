@@ -6,7 +6,7 @@
   <node pkg="tf" type="static_transform_publisher" name="map_test_to_camera_init" args="3.5 3.35 0 0 0 0 map camera_init 100" />   
   
   <!-- 底盘到雷达的变换 -->
-  <node pkg="tf" type="static_transform_publisher" name="base_to_laser" args="0.14 0 0.15 0 0 0 base_link livox_frame 100" />
+  <node pkg="tf" type="static_transform_publisher" name="base_to_laser" args="0.12832 0.08874 0.1543 0 0 0 base_link livox_frame 100" />
   <!-- <node pkg="tf" type="static_transform_publisher" name="aft_to_laser" args="0 0 0 0 0 0 aft_mapped livox_frame 100" /> -->
   
   <!-- URDF -->

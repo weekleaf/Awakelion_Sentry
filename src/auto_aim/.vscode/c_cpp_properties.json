@@ -1,0 +1,48 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "${default}",
+        "limitSymbolsToIncludedHeaders": false
+      },
+      "includePath": [
+        "/home/rm/awakelion_sentry/devel/include/**",
+        "/home/rm/git_repository/awakelion_navigation/devel/include/**",
+        "/home/rm/git_repository/awakelion_driver/devel/include/**",
+        "/opt/ros/noetic/include/**",
+        "/home/rm/awakelion_sentry/src/navigation/amcl/include/**",
+        "/home/rm/awakelion_sentry/src/auto_aim/include/**",
+        "/home/rm/awakelion_sentry/src/navigation/base_local_planner/include/**",
+        "/home/rm/awakelion_sentry/src/navigation/carrot_planner/include/**",
+        "/home/rm/awakelion_sentry/src/navigation/clear_costmap_recovery/include/**",
+        "/home/rm/awakelion_sentry/src/navigation/costmap_2d/include/**",
+        "/home/rm/awakelion_sentry/src/navigation/dwa_local_planner/include/**",
+        "/home/rm/awakelion_sentry/src/navigation/eband_local_planner/include/**",
+        "/home/rm/awakelion_sentry/src/FAST_LIO/include/**",
+        "/home/rm/awakelion_sentry/src/navigation/global_planner/include/**",
+        "/home/rm/git_repository/dmfg/src/linefit_ground_segmentation/linefit_ground_segmentation/include/**",
+        "/home/rm/awakelion_sentry/src/navigation/map_server/include/**",
+        "/home/rm/awakelion_sentry/src/navigation/move_base/include/**",
+        "/home/rm/awakelion_sentry/src/navigation/move_slow_and_clear/include/**",
+        "/home/rm/awakelion_sentry/src/navigation/nav_core/include/**",
+        "/home/rm/awakelion_sentry/src/navigation/navfn/include/**",
+        "/home/rm/awakelion_sentry/src/Point-LIO/include/**",
+        "/home/rm/awakelion_sentry/src/rm_decision/include/**",
+        "/home/rm/awakelion_sentry/src/rm_msgs/include/**",
+        "/home/rm/awakelion_sentry/src/robot_driver/include/**",
+        "/home/rm/awakelion_sentry/src/navigation/rotate_recovery/include/**",
+        "/home/rm/awakelion_sentry/src/sentry_navigation/include/**",
+        "/home/rm/awakelion_sentry/src/serial/include/**",
+        "/home/rm/awakelion_sentry/src/navigation/teb_local_planner/include/**",
+        "/home/rm/awakelion_sentry/src/navigation/voxel_grid/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS",
+      "intelliSenseMode": "gcc-x64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "c++14"
+    }
+  ],
+  "version": 4
+}

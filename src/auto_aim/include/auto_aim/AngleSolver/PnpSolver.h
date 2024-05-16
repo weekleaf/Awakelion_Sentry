@@ -1,8 +1,8 @@
 #ifndef PNPSOLVER_H
 #define PNPSOLVER_H
 //以下四个参数的大小与正负号与电机和相机的安装方向有关，尽量不要改公式里的符号，或者自己区分
-const double PCBD=0;  //
-const double PBMD=0; //13.7
+const double PCBD=0.1;  //
+const double PBMD=0.1; //13.7
 
 const double YCBD=0.1;//8
 const double YBMD=0.1;//8
@@ -171,9 +171,9 @@ public:
 
     void Camera2Moto(double moto_pitch, double moto_yaw, Eigen::Vector3d tvec, Eigen::Vector3d ctvec,double &moto_move_pitch, double &moto_move_yaw, double v, double g);
 
-    double trajectoryEstimation(double ground_dist,double height,double v,double g,double &fly_time/*顺便更正预测时间*/);
-
     void coordinary_transformation(double moto_pitch, double moto_yaw, Eigen::Vector3d &tvec, Eigen::Vector3d rvec, Eigen::Vector3d &moto_tvec);
+
+    void Camera2Moto_rune(double moto_pitch, double moto_yaw , Eigen::Vector3d tvec,Eigen::Vector3d ctvec, double &moto_move_pitch, double &moto_move_yaw,double v,double g);
 
 public:
     cv::Mat cam_matrix;                 // 内参矩阵

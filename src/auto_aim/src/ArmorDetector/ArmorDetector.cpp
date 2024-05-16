@@ -12,7 +12,7 @@ DetectorTool::DetectorTool(std::vector<ArmorObject> objects, bool &color_num)
     for(auto obj:objects){
             if (this->Blue_or_Red == 0)
             {
-                if (obj.color == BLUE_SMALL || obj.color == BLUE_BIG || obj.color == PURPLE_SMALL || obj.color == PURPLE_BIG || obj.cls == 7 || obj.color>=4)
+                if (obj.color == BLUE_SMALL || obj.color == BLUE_BIG || obj.color == PURPLE_SMALL || obj.color == PURPLE_BIG)
                     continue;
                 else{
                     cars_map[obj.cls].push_back(obj);
@@ -20,7 +20,7 @@ DetectorTool::DetectorTool(std::vector<ArmorObject> objects, bool &color_num)
             }
             else if (this->Blue_or_Red == 1)
             {
-                if (obj.color == RED_SMALL || obj.color == RED_BIG || obj.color == PURPLE_SMALL || obj.color == PURPLE_BIG || obj.cls == 7 || obj.color>=4)
+                if (obj.color == RED_SMALL || obj.color == RED_BIG || obj.color == PURPLE_SMALL || obj.color == PURPLE_BIG)
                     continue;
                 cars_map[obj.cls].push_back(obj);
             }

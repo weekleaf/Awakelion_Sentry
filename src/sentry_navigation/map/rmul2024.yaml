@@ -1,4 +1,4 @@
-image: /home/rm/git_repository/awakelion_navigation/src/sentry_navigation/map/rmul2024.pgm
+image: /home/rm/awakelion_sentry/src/sentry_navigation/map/rmul2024.pgm
 resolution: 0.050000
 origin: [-10.000000, -10.000000, 0.000000]
 negate: 0

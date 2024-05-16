@@ -8,6 +8,7 @@
 
 #define DEBUG_MODE      // 是否开启debug
 //#define SAVE_IMG
+#define ANGLE 1
 #define USE_SERIAL      // 使用串口
 #define USE_VIDEO 0    // 0迈德威视 1摄像头/视频
 #define SHOW_WIDTH 750.0/*640*///750
@@ -16,7 +17,7 @@
 //-----------------------------------【宏定义-调试模块】--------------------------------------------
 // brief：主要用于定义一些窗口
 //-----------------------------------------------------------------------------------------------
-#define VIDEO_PATH "/home/rm/Infantry_2023.7.21_test/FOSU_AWAKENLION_INFANTRY/save_video/bluerune.mp4"     //测试视频路径run_left
+#define VIDEO_PATH "/home/rm/Infantry_2023.7.21_test/FOSU_AWAKENLION_INFANTRY/save_video/3.mp4"     //测试视频路径run_left
 #define WIN_OTHER "主要参数"
 #define WIN_CAMERA "相机位置参数"
 
@@ -32,14 +33,14 @@
 
 #define ARMS 1          // 当前PC所属机器人编号
 #if (ARMS == 1)
-// #define MODEL_PATH "/home/rm/awakelion_sentry/src/auto_aim/best_06_02.onnx"
-#define MODEL_PATH "/home/rm/awakelion_sentry/src/auto_aim/tdt5.onnx"
-#define MODEL_PATH_BUFF "/home/rm/nn_model/buff-05-28-01.xml"
-#define PARAM_OTHER_PATH "/home/rm/git_repository/awakelion_vision3/src/auto_aim/config_file/param_other.yml"  //全局配置文件路径
-#define PARAM_CAMERA_PATH "/home/rm/git_repository/awakelion_vision3/src/auto_aim/config_file/param_armor.yml"  //装甲板配置文件路径
-#define PARAM_CALIBRATION_752 "/home/rm/git_repository/awakelion_vision3/src/auto_aim/calibration/Camera752-infantry.xml"  //相机参数
-#define SAVE_VIDEO_DIR   "/home/rm/git_repository/awakelion_vision3/src/auto_aim/save_video/"
-#define SAVE_PIC_DIR   "/home/rm/git_repository/awakelion_vision3/src/auto_aim/save_pic/"
+//#define MODEL_PATH "/home/rm/nn_model/best_06_02.xml"
+#define MODEL_PATH "/home/rm/newnewnew/src/auto_aim/tdt5.onnx"
+#define MODEL_PATH_BUFF "/home/rm/newnewnew/src/auto_aim/buff-05-28-01.xml"
+#define PARAM_OTHER_PATH "/home/rm/Infantry_2023.7.21_test/config_file/param_other.yml"  //全局配置文件路径
+#define PARAM_CAMERA_PATH "/home/rm/Infantry_2023.7.21_test/config_file/param_camera.yml"  //装甲板配置文件路径
+#define PARAM_CALIBRATION_752 "/home/rm/newnewnew/src/auto_aim/calibration/Camera752-infantry.xml"  //相机参数
+#define SAVE_VIDEO_DIR   "/home/rm/Infantry_2023.7.21_test/FOSU_AWAKENLION_INFANTRY/save_video/"
+#define SAVE_PIC_DIR   "/home/rm/Infantry_2023.7.21_test/FOSU_AWAKENLION_INFANTRY/save_pic/"
 
 #endif  // ARMS
 

@@ -18,8 +18,8 @@ class ArmorPredictTool
 {
 public:
     ArmorPredictTool();
-    ArmorPredictTool(AngleSolver angle_solver,double moto_pitch,double moto_yaw, double *cars_radio,ArmorObject* object_addr,
-    std::vector<ArmorObject> *cars_map,double bullet_speed,double running_time);
+    ArmorPredictTool(AngleSolver angle_solver,double moto_pitch,double moto_yaw,double last_pitch,double last_yaw, double *cars_radio,ArmorObject* object_addr,
+                     std::vector<ArmorObject> *cars_map,double bullet_speed,double running_time);
 
     bool findSameCls();
     bool solveCarRadio();
@@ -28,8 +28,11 @@ public:
     bool stateAdd();
     bool predictArmor();
     void kalmanInit();
-    void inputData(AngleSolver angle_solver,double moto_pitch,double moto_yaw, double *cars_radio,ArmorObject* object_addr,
+    void inputData(AngleSolver angle_solver,double moto_pitch,double moto_yaw,double last_pitch,double last_yaw, double *cars_radio,ArmorObject* object_addr,
                    std::vector<ArmorObject> *cars_map,double bullet_speed,double running_time);
+
+    cv::Point2f world2image(Eigen::Vector3d world_point);
+
 
     Eigen::Vector3d tvec_armor;
     Eigen::Vector3d tvec11;
@@ -50,12 +53,16 @@ private:
     double *cars_radio;
     double car_radio;
     ArmorObject *object_addr;
+    ArmorObject obj1;
+    ArmorObject obj2;
     std::vector<ArmorObject> *cars_map;
     AngleSolver angle_solver;
 
     
     double moto_pitch;
     double moto_yaw;
+    double last_pitch;
+    double last_yaw;
 
     Armor_Kalman angle_kalman;
     Armor_Kalman car_kalman_x;

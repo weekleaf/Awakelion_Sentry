@@ -1,0 +1,25 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "${default}",
+        "limitSymbolsToIncludedHeaders": false
+      },
+      "includePath": [
+        "/home/rm/newnewnew/devel/include/**",
+        "/opt/ros/noetic/include/**",
+        "/home/rm/newnewnew/src/auto_aim/include/**",
+        "/home/rm/newnewnew/src/rm_msgs/include/**",
+        "/home/rm/newnewnew/src/robot_driver/include/**",
+        "/home/rm/newnewnew/src/serial/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS",
+      "intelliSenseMode": "gcc-x64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "c++14"
+    }
+  ],
+  "version": 4
+}

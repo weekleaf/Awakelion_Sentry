@@ -37,22 +37,24 @@ public:
        this->t=t;
        A(0,1)=t;
        if((x_k1(0,0)==0.0&&x_k1(1,0)==0.0)||std::isnan(x_k1(0,0)))
-           x_k1=z_k;
+           x_k1 = z_k;
        Eigen::Vector2d p_x_k = A * x_k1;
        if(std::isnan(p_x_k(0,0)))
-           p_x_k<<0.0,0.0;
-       P = A * P * A.transpose() /*+ A * Q * A.transpose()*/ ;
+           p_x_k = x_k1;
+       P = A * P * A.transpose() /*+ A * Q * A.transpose()*/ + Q ;
        if(std::isnan(P(0,0)))
-           P<<0.1,0.1,0.1,0.1;
-       K = P * H.transpose() * (H * P * H.transpose() /*+ R*/).inverse() ;
+           P<<0.2,0.2,0.2,0.2;
+       K = P * H.transpose() * (H * P * H.transpose() + R).inverse() ;
        if(std::isnan(K(0,0)))
-           K<<0.1,0.1,0.1,0.1;
+           K<<0.5,0.5,0.5,0.5;
        x_k1 = p_x_k + K * (z_k - H * p_x_k);
-       if(std::isnan(x_k1(0,0)))
+       if(std::isnan(x_k1(0,0))){
+           std::cout<<"nan!"<<std::endl;
            x_k1=z_k;
+       }
        P = (Eigen::Matrix2d::Identity() - K * H) * P;
        if(std::isnan(P(0,0)))
-           P<<0.1,0.1,0.1,0.1;
+           P<<0.2,0.2,0.2,0.2;
        return x_k1;
    }
 };

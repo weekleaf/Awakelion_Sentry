@@ -10,6 +10,8 @@
 
 #include "msg_serialize.h"
 #include <iostream>
+#include "RMUC_msgs/common.h"
+#include "RMUC_msgs/robotstatus.h"
 #define UNPACK_DATA_BUFFSIZE 200           //接收自主控板信息的缓冲区大小
 #define PACK_DATA_BUFFSIZE   150            //发送到主控板信息的缓冲区大小
 
@@ -53,7 +55,7 @@ public:
     void writeData(vision_tx_data &msg_data);
     void readData(vision_rx_data &msg_data,robot_judge1_data_t &judge1_data,game_robot_HP_t &robot_HP);
     void unpackData(uint8_t *data, int size);
-    void JudgeDate_Processing(robot_judge1_data_t &judge1_data,game_robot_HP_t &robot_HP);
+    void JudgeDate_Processing(RMUC_msgs::common &common_bag,RMUC_msgs::robotstatus &robotstatus_bag,robot_judge1_data_t &judge1_data,game_robot_HP_t &robot_HP);
 
     bool reading(unsigned char *msg_data, uint16_t &size);
 };

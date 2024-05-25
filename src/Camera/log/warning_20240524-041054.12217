@@ -1,0 +1,11 @@
+Log file created at: 2024/05/24 04:10:54
+Running on machine: rm-NUC11PAHi7
+Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
+W0524 04:10:54.553349 12248 MVCameraBase.cpp:99] Device:(name:MV-SUA133GC#0 sn:042090420361)Lost
+W0524 04:10:56.000362 12248 MVCameraBase.cpp:119] Device:(name:MV-SUA133GC#0 sn:042090420361)ReConnected, TolCount:1
+W0524 04:10:58.128541 12248 MVCameraBase.cpp:99] Device:(name:MV-SUA133GC#0 sn:042090420361)Lost
+W0524 04:10:58.946359 12248 MVCameraBase.cpp:119] Device:(name:MV-SUA133GC#0 sn:042090420361)ReConnected, TolCount:2
+W0524 04:11:23.322840 12248 MVCameraBase.cpp:99] Device:(name:MV-SUA133GC#0 sn:042090420361)Lost
+W0524 04:11:23.916386 12248 MVCameraBase.cpp:119] Device:(name:MV-SUA133GC#0 sn:042090420361)ReConnected, TolCount:3
+W0524 04:11:26.043694 12248 MVCameraBase.cpp:99] Device:(name:MV-SUA133GC#0 sn:042090420361)Lost
+W0524 04:11:26.854519 12248 MVCameraBase.cpp:119] Device:(name:MV-SUA133GC#0 sn:042090420361)ReConnected, TolCount:4

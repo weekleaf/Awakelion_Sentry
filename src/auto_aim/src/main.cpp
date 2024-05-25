@@ -144,7 +144,7 @@ void detectThread(AimData *p_aim_data){
             (*p_aim_data).main_settings.main_mode = pc_send_mesg.task_mode;
 //#endif
 
-       if((*p_aim_data).main_settings.main_mode == 0){
+       if(/*(*p_aim_data).main_settings.main_mode == 0*/1){
 
          ad.detect(((*p_aim_data).src),objects);
          detector_tool=DetectorTool(objects,color);
@@ -259,7 +259,7 @@ void predictThread(AimData* p_aim_data){
     rune_predict_tool.initKalman();
 
         double time1=cv::getTickCount();
-        if((*p_aim_data).main_settings.main_mode == 0){
+        if(/*(*p_aim_data).main_settings.main_mode == 0*/1){
 
              double moto_pitch_angle=pc_send_mesg.robot_pitch;
              double moto_yaw_angle=pc_send_mesg.robot_yaw;

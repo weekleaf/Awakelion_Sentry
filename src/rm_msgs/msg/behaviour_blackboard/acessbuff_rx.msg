@@ -1,2 +1,0 @@
-uint8 stage_remain_time
-bool center_activate

@@ -9,7 +9,7 @@
   <node name='odom_trans' pkg="sentry_navigation" type="odom_transform"/>
 
   <!-- 设置需要用于导航的地图 -->
-  <arg name="map_file" default="$(find sentry_navigation)/map/rmuc.yaml"/>
+  <arg name="map_file" default="$(find sentry_navigation)/map/map.yaml"/>
   <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)">
   <param name="frame_id" value="map" />
   </node> 

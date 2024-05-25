@@ -106,6 +106,8 @@ void serialPort::pc_data_handler(uint8_t *p_frame,
   case GIMBAL_DATA_ID:
     memcpy(&game_robot_HP_,data_addr,data_length);
     break;
+//   case SHOOT_TASK_DATA_ID:
+//     break;
 
   default:
   std::cout << "没有匹配的pc命令码" << std::endl;
@@ -194,49 +196,62 @@ void serialPort::writeData(vision_tx_data &pc_recv_mesg)
     serial.write(tx_buf, sizeof(tx_buf)); 
 }
 
-void serialPort::JudgeDate_Processing(robot_judge1_data_t &judge1_data,game_robot_HP_t &robot_HP)
+void serialPort::JudgeDate_Processing(RMUC_msgs::common &common_bag,RMUC_msgs::robotstatus &robotstatus_bag,robot_judge1_data_t &judge1_data,game_robot_HP_t &robot_HP)
         {
+            if(judge1_data.game_progress==4&&judge1_data.stage_remain_time<=420)
+            {
+                common_bag.gamestart=1;
+            }
             if(judge1_data.robot_id >= 101)
                 current_robot_color = blue;
             else
-                current_robot_color = red;
+                 current_robot_color = red;
 
-
-            if(current_robot_color = blue)
+            if(current_robot_color == blue)
             {
-                if(robot_HP.red_1_robot_HP != 0)
-                {
-                    enemy_HP_Hero = robot_HP.red_1_robot_HP;
-                    if(robot_HP.red_3_robot_HP = 0)
-                    enemy_HP_Infansty1 = robot_HP.red_4_robot_HP;
-                    else
-                    enemy_HP_Infansty1 = robot_HP.red_3_robot_HP;
-                }  
-                else
-                {
-                    enemy_HP_Infansty1 = robot_HP.red_3_robot_HP;
-                    enemy_HP_Infansty2 = robot_HP.red_4_robot_HP;
-                }
-                enemy_HP_Sentry = robot_HP.red_7_robot_HP;
-                enemy_HP_Base   = robot_HP.red_base_HP;
+                //blue是我方
+                judge1_data.current_HP=robot_HP.blue_7_robot_HP;
+                robotstatus_bag.we_hero_HP = robot_HP.blue_1_robot_HP;
+                robotstatus_bag.we_sapper_HP = robot_HP.blue_2_robot_HP;
+                robotstatus_bag.we_infantry_3_HP = robot_HP.blue_3_robot_HP;
+                robotstatus_bag.we_infantry_4_HP = robot_HP.blue_4_robot_HP;
+                robotstatus_bag.we_infantry_5_HP = robot_HP.blue_5_robot_HP;
+                common_bag.we_outpost_HP = robot_HP.blue_outpost_HP;
+                common_bag.we_base_HP = robot_HP.blue_base_HP;
+
+
+                //red是敌方
+                robotstatus_bag.enemy_sentry_HP=robot_HP.red_7_robot_HP;
+                robotstatus_bag.enemy_hero_HP = robot_HP.red_1_robot_HP;
+                robotstatus_bag.enemy_sapper_HP = robot_HP.red_2_robot_HP;
+                robotstatus_bag.enemy_infantry_3_HP = robot_HP.red_3_robot_HP;
+                robotstatus_bag.enemy_infantry_4_HP = robot_HP.red_4_robot_HP;
+                robotstatus_bag.enemy_infantry_5_HP = robot_HP.red_5_robot_HP;
+                common_bag.enemy_outpost_HP = robot_HP.red_outpost_HP;
+                common_bag.enemy_base_HP = robot_HP.red_base_HP;
+
             }
-            else if (current_robot_color = red)
-            {
-                if(robot_HP.blue_1_robot_HP != 0)
-                {
-                    enemy_HP_Hero = robot_HP.blue_1_robot_HP;
-                    if(robot_HP.blue_3_robot_HP = 0)
-                    enemy_HP_Infansty1 = robot_HP.blue_4_robot_HP;
-                    else 
-                    enemy_HP_Infansty1 = robot_HP.blue_3_robot_HP;
-                }
-                else
-                {
-                    enemy_HP_Infansty1 = robot_HP.blue_3_robot_HP;
-                    enemy_HP_Infansty2 = robot_HP.blue_4_robot_HP;
-                }
-                enemy_HP_Sentry = robot_HP.blue_7_robot_HP;
-                enemy_HP_Base   = robot_HP.blue_base_HP;
+            else if (current_robot_color == red)
+            {   
+                //red是我方
+                judge1_data.current_HP=robot_HP.red_7_robot_HP;
+                robotstatus_bag.we_hero_HP = robot_HP.red_1_robot_HP;
+                robotstatus_bag.we_sapper_HP = robot_HP.red_2_robot_HP;
+                robotstatus_bag.we_infantry_3_HP = robot_HP.red_3_robot_HP;
+                robotstatus_bag.we_infantry_4_HP = robot_HP.red_4_robot_HP;
+                robotstatus_bag.we_infantry_5_HP = robot_HP.red_5_robot_HP;
+                common_bag.we_outpost_HP = robot_HP.red_outpost_HP;
+                common_bag.we_base_HP = robot_HP.red_base_HP;
+
+                //blue是敌方
+                robotstatus_bag.enemy_sentry_HP=robot_HP.blue_7_robot_HP;
+                robotstatus_bag.enemy_hero_HP = robot_HP.blue_1_robot_HP;
+                robotstatus_bag.enemy_sapper_HP = robot_HP.blue_2_robot_HP;
+                robotstatus_bag.enemy_infantry_3_HP = robot_HP.blue_3_robot_HP;
+                robotstatus_bag.enemy_infantry_4_HP = robot_HP.blue_4_robot_HP;
+                robotstatus_bag.enemy_infantry_5_HP = robot_HP.blue_5_robot_HP;
+                common_bag.enemy_outpost_HP = robot_HP.blue_outpost_HP;
+                common_bag.enemy_base_HP = robot_HP.blue_base_HP;
             }
             else
                 std::cout << "Judge_Color ERROR!" << std::endl;

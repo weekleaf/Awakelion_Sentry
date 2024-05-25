@@ -1,0 +1,3 @@
+<launch>
+  <node pkg="RMUC_Decision" type="test_node" name="test_node" output="screen" />
+</launch>

@@ -10,7 +10,7 @@ find_package(
         serial
         std_msgs
         sensor_msgs
-        rm_msgs
+        RMUC_msgs
 )
 
 ## Generate messages in the 'msg' folder
@@ -30,7 +30,7 @@ generate_messages(
 catkin_package(
  INCLUDE_DIRS include
 #  LIBRARIES rm_bringup
- CATKIN_DEPENDS roscpp rospy sensor_msgs std_msgs message_runtime
+ CATKIN_DEPENDS roscpp rospy sensor_msgs std_msgs RMUC_msgs message_runtime
  DEPENDS system_lib
 )
 

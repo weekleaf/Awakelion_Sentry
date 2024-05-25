@@ -1,0 +1,33 @@
+<root BTCPP_format="4">
+
+    <BehaviorTree ID="MainTree">
+      <Sequence>
+        <Gamestart _skipIf="@gamestart==1" gamestart_GS="{@gamestart}"/>
+        <SubTree ID="AttackOutpost" _skipIf="@enemy_outpost_HP==0"/>
+        <SubTree ID="Patrol"/>
+      </Sequence>
+    </BehaviorTree>
+  
+    <BehaviorTree ID="AttackOutpost">
+      <Sequence>
+        <GOTO gamestart_GOTO="{@gamestart}"/>
+        <Attack we_outpost_HP="{@we_outpost_HP}" enemy_outpost_HP="{@enemy_outpost_HP}"/>
+      </Sequence>
+    </BehaviorTree>
+  
+    <BehaviorTree ID="Patrol">
+      <Sequence>
+        <patrol _skipIf="@we_outpost_HP!=0" 
+                we_x="{@we_x}"
+                we_y="{@we_y}"
+                we_outpost_HP="{@we_outpost_HP}"
+                we_base_HP="{@we_base_HP}"
+                patrol_armor_id="{@armor_id}" 
+                patrol_HP_deduction_reason="{@HP_deduction_reason}"
+                patrol_current_HP="{@current_HP}"
+                patrol_current_ammo="{@current_ammo}"/>
+        <guardbase _skipIf="@we_base_HP==5000"/>
+      </Sequence>
+    </BehaviorTree>
+  
+  </root>

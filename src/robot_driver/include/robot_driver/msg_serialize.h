@@ -89,19 +89,18 @@ typedef struct
 //21字节
 typedef struct
 {
-  uint8_t game_type : 4;            //比赛类型：1. RMUC 2.单项赛 3.RMUA 4.RMUL(3v3) 5.1v1
+  uint8_t dart_info : 4;
 	uint8_t game_progress : 4;        //0.未开始/1.准备阶段/2.15s自检/3.5s倒计时/4.比赛中/5.比赛结束 
 	uint16_t stage_remain_time;       //剩余时间(s)
 	uint8_t robot_id;                 //机器人ID
-	uint16_t current_HP;              //当前血量
-	uint16_t maximum_HP;              //最大血量
-	_Float32 x;                       //当前机器人位置x坐标
-  _Float32 y;                       //当前机器人位置y坐标
-  _Float32 angle;                   //测速模块朝向
+	uint16_t current_HP : 8;              //当前血量
+	uint16_t maximum_HP : 8;              //最大血量
 	uint8_t armor_id : 4;             //受击打装甲板ID
   uint8_t HP_deduction_reason : 4;  //血量变化类型 0.装甲板受击打/1.裁判系统模块离线/2.超射速/3.热量超限/4.底盘功率超限/5.装甲板受撞击
-  uint8_t center_activate;
   uint16_t projectile_allowance_17mm; //可发弹量
+  uint8_t cmd_keyboard;
+  float target_position_x; 
+  float target_position_y;
 } __attribute__((packed)) robot_judge1_data_t;
 
 /**
@@ -112,14 +111,17 @@ typedef struct
   uint8_t task_mode : 1;    // 模式 ( 0 自瞄  / 1 大小符)
   uint8_t visual_valid : 1; // 视觉有效位 (0/1)
   uint8_t shoot_valid  : 1; // 发射有效位 (0/1)
-  uint8_t reserved : 5;     // 保留位
+  uint8_t navigation_determine : 1;
+  uint8_t self_spinning : 1; //小陀螺
+  uint8_t is_rebirth : 1;  //是否复活的命令
+  uint8_t reserved : 2;     // 保留位
   float aim_pitch;          // 欧拉角(度)
   float aim_yaw;            // 欧拉角(度)
-  uint8_t navigation_determine;
-  uint8_t dodge_ctrl; //小陀螺
   float linear_x;  //线速度x  m/s
   float linear_y;  //线速度y  m/s
   float angle_w;   //角速度w 
+  float init_yaw_angle ;  //初yaw角
+  float end_yaw_angle ;  //末yaw角
 } __attribute__((packed)) vision_tx_data;
 
 typedef struct

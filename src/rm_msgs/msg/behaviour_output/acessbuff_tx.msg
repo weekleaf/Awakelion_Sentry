@@ -1,1 +1,0 @@
-bool dodge_ctrl

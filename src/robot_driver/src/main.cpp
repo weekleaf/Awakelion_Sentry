@@ -6,32 +6,22 @@
 #include <ros/ros.h>
 #include <nav_msgs/Odometry.h>
 #include <geometry_msgs/Twist.h>
-#include <robot_driver/serialPort.h>
-
 #include "robot_driver/MYAPI.h"
 #include "robot_driver/serialPort.h"
 #include "robot_driver/vision_tx_data.h"
 #include "robot_driver/msg_serialize.h"
 #include "robot_driver/vision_rx_data.h"
-#include "rm_msgs/GameStatus.h"
-#include "rm_msgs/addblood_rx.h"
-#include "rm_msgs/addblood_tx.h"
-#include "rm_msgs/attacksentry_rx.h"
-#include "rm_msgs/attacksentry_tx.h"
-#include "rm_msgs/acessbuff_rx.h"
-#include "rm_msgs/acessbuff_tx.h"
-#include "rm_msgs/dense_rx.h"
-#include "rm_msgs/dense_tx.h"
+#include "RMUC_msgs/common.h"
+#include "RMUC_msgs/heal.h"
+#include "RMUC_msgs/robotstatus.h"
+#include "RMUC_msgs/setgoal.h"
+#include "RMUC_msgs/tx.h"
 
 using namespace ly;
 
-ros::Publisher odomPub;
 serialPort serial_handle;
-vision_tx_data pc_recv_mesg;
-bool dodge_ctrl1;
-bool dodge_ctrl2;
-bool dodge_ctrl3;
-bool dodge_ctrl4;
+vision_tx_data pc_recv_mesg;  //小电脑发出去的
+uint8_t visual_valid_tx_;
 
 void cmdCallback(const geometry_msgs::Twist::ConstPtr &msg) {
    pc_recv_mesg.navigation_determine = 1;
@@ -42,23 +32,44 @@ void cmdCallback(const geometry_msgs::Twist::ConstPtr &msg) {
 void visionCallback(const robot_driver::vision_tx_data::ConstPtr &msg){
     pc_recv_mesg.aim_pitch = msg->aim_pitch;
     pc_recv_mesg.aim_yaw = msg->aim_yaw;
-    pc_recv_mesg.shoot_valid = msg->shoot_valid;
     pc_recv_mesg.visual_valid = msg->visual_valid;
+    pc_recv_mesg.shoot_valid = msg->shoot_valid;
     pc_recv_mesg.task_mode = msg->task_mode;
 }
-void DenseCallback(const rm_msgs::dense_tx::ConstPtr &msg){   
-    dodge_ctrl1 = msg->dodge_ctrl;
+void tx_cb(const RMUC_msgs::tx::ConstPtr &msg){
+    pc_recv_mesg.self_spinning=msg->self_spinning_tx;
+    if(msg->visual_valid_tx == 1)
+    {
+        visual_valid_tx_ = 1;
+    }
+    else
+        visual_valid_tx_ = 0;
+    pc_recv_mesg.init_yaw_angle=msg->init_yaw_angle_tx;
+    pc_recv_mesg.end_yaw_angle=msg->end_yaw_angle_tx;
+    pc_recv_mesg.is_rebirth=msg->is_rebirth;
 }
-void AcessCallback(const rm_msgs::acessbuff_tx::ConstPtr &msg){
-    dodge_ctrl2 = msg->dodge_ctrl;
+void pc_send_bag_process(robot_driver::vision_rx_data &pc_send_bag,vision_rx_data &pc_send_mesg)
+{
+    pc_send_bag.robot_color=pc_send_mesg.armors_Union.info.robot_color;
+    pc_send_bag.task_mode=pc_send_mesg.armors_Union.info.task_mode;
+    pc_send_bag.visual_valid=pc_send_mesg.armors_Union.info.visual_valid;
+    pc_send_bag.direction=pc_send_mesg.armors_Union.info.direction;
+    pc_send_bag.bullet_level=pc_send_mesg.armors_Union.info.bullet_level;
+    pc_send_bag.robot_pitch=pc_send_mesg.robot_pitch;
+    pc_send_bag.robot_yaw=pc_send_mesg.robot_yaw;
+    pc_send_bag.time_stamp=pc_send_mesg.time_stamp;
 }
-void AttackSentry(const rm_msgs::acessbuff_tx::ConstPtr &msg){
-    dodge_ctrl3 = msg->dodge_ctrl;
+void common_msgs_process(RMUC_msgs::common &common_bag,game_robot_HP_t  &game_robot_HP_,robot_judge1_data_t &robot_judge1_data_)
+{
+    common_bag.armor_id = robot_judge1_data_.armor_id;
+    common_bag.HP_deduction_reason = robot_judge1_data_.HP_deduction_reason;
+    common_bag.game_progress = robot_judge1_data_.game_progress;
+    common_bag.stage_remain_time = robot_judge1_data_.stage_remain_time;
 }
-void Addblood(const rm_msgs::addblood_tx::ConstPtr &msg){
-    dodge_ctrl4 = msg->dodge_ctrl;
-} 
-
+void heal_msgs_process(RMUC_msgs::heal &heal_bag,robot_judge1_data_t &robot_judge1_data_)
+{
+    heal_bag.current_HP=robot_judge1_data_.current_HP;
+}
 int main(int argc, char** argv) {
     setlocale(LC_ALL,"");
     ros::init(argc, argv, "robot_driver");
@@ -67,26 +78,19 @@ int main(int argc, char** argv) {
     nh.param<std::string>("serial_name", serial_handle.name, "/dev/ttyACM0"); ///dev/ttyUSB0
     ros::Subscriber sub1 = nh.subscribe("/cmd_vel", 1, cmdCallback);
     ros::Subscriber sub2 = nh.subscribe("/vision_tx_data", 1, visionCallback);
-    ros::Subscriber sub3 = nh.subscribe("/dense_output", 1, DenseCallback);
-    ros::Subscriber sub4 = nh.subscribe("/acessbuff_output", 1, AcessCallback);
-    ros::Subscriber sub5 = nh.subscribe("/attack_sentry_output", 1, AttackSentry);
-    ros::Subscriber sub6 = nh.subscribe("/add_blood_output", 1, Addblood);
+    ros::Subscriber tx_sub=nh.subscribe("/tx_msg",1,tx_cb);
 
     ros::Publisher vision_rx_data_pub = nh.advertise<robot_driver::vision_rx_data>("/vision_rx_data", 1);
-    ros::Publisher game_status_pub_ = nh.advertise<rm_msgs::GameStatus>("/game_status_blackboard", 1);
-    ros::Publisher addblood_pub = nh.advertise<rm_msgs::addblood_rx>("/add_blood_blackboard",1);
-    ros::Publisher attacksentry_pub = nh.advertise<rm_msgs::attacksentry_rx>("/attack_sentry_blackboard",1);
-    ros::Publisher acessbuff_pub = nh.advertise<rm_msgs::acessbuff_rx>("/acessbuff_blackboard",1);
-    ros::Publisher dense_pub = nh.advertise<rm_msgs::dense_rx>("/dense_blackboard",1);
-
-
-    ROS_INFO("pc_recv_mesg.visual_valid=%u",pc_recv_mesg.visual_valid);
+    ros::Publisher common_pub = nh.advertise<RMUC_msgs::common>("/common_msg", 1);
+    ros::Publisher heal_pub = nh.advertise<RMUC_msgs::heal>("/heal_msg", 1);
+    ros::Publisher robotstatus_pub = nh.advertise<RMUC_msgs::robotstatus>("/robotstatus_msg", 1);
+    ros::Publisher setgoal_pub = nh.advertise<RMUC_msgs::setgoal>("/setgoal_msg", 1);
+    
     robot_driver::vision_rx_data pc_send_bag;
-    rm_msgs::GameStatus GameStatus_;
-    rm_msgs::addblood_rx addblood_rx_;
-    rm_msgs::attacksentry_rx attacksentry_rx_;
-    rm_msgs::acessbuff_rx acessbuff_rx_;
-    rm_msgs::dense_rx dense_rx_;
+    RMUC_msgs::common common_bag;
+    RMUC_msgs::heal heal_bag;
+    RMUC_msgs::robotstatus robotstatus_bag;
+    RMUC_msgs::setgoal setgoal_bag;
 
     vision_rx_data pc_send_mesg;
     game_robot_HP_t    game_robot_HP_;
@@ -98,16 +102,10 @@ int main(int argc, char** argv) {
     std::cout << "listener thread start" << std::endl;
     while (ros::ok()) {
         try {
-            if(dodge_ctrl1 || dodge_ctrl2 || dodge_ctrl3 || dodge_ctrl4)
+            if(visual_valid_tx_ == 1)
             {
-                pc_recv_mesg.dodge_ctrl = 1;
-
+                pc_recv_mesg.visual_valid = 0;
             }
-            else pc_recv_mesg.dodge_ctrl = 0;
-            dodge_ctrl1 = 0;
-            dodge_ctrl2 = 0;
-            dodge_ctrl3 = 0;
-            dodge_ctrl4 = 0;
             serial_handle.writeData(pc_recv_mesg);     //发送数据
             serial_handle.readData(pc_send_mesg,robot_judge1_data_,game_robot_HP_);      //接收数据
             ROS_INFO("LINEAR.X = %f",pc_recv_mesg.linear_x);
@@ -120,51 +118,21 @@ int main(int argc, char** argv) {
             ROS_INFO("发送的pit消息为%f",pc_send_bag.robot_pitch);
             ROS_INFO("发送的yaw消息为%f\n",pc_send_bag.robot_yaw);
 
-
-            serial_handle.JudgeDate_Processing(robot_judge1_data_,game_robot_HP_);
             pc_recv_mesg.navigation_determine = 0;
-            pc_send_bag.robot_color=pc_send_mesg.armors_Union.info.robot_color;
-            pc_send_bag.task_mode=pc_send_mesg.armors_Union.info.task_mode;
-            pc_send_bag.visual_valid=pc_send_mesg.armors_Union.info.visual_valid;
-            pc_send_bag.direction=pc_send_mesg.armors_Union.info.direction;
-            pc_send_bag.bullet_level=pc_send_mesg.armors_Union.info.bullet_level;
-            pc_send_bag.robot_pitch=pc_send_mesg.robot_pitch;
-            pc_send_bag.robot_yaw=pc_send_mesg.robot_yaw;
-            pc_send_bag.time_stamp=pc_send_mesg.time_stamp;
+            pc_send_bag_process(pc_send_bag,pc_send_mesg);
+            serial_handle.JudgeDate_Processing(common_bag,robotstatus_bag,robot_judge1_data_,game_robot_HP_);
+            common_msgs_process(common_bag,game_robot_HP_,robot_judge1_data_);
+            heal_msgs_process(heal_bag,robot_judge1_data_);
+            setgoal_bag.cmd_keyboard = robot_judge1_data_.cmd_keyboard;
+            setgoal_bag.dart_info = robot_judge1_data_.dart_info;
+            setgoal_bag.target_position_x = robot_judge1_data_.target_position_x;
+            setgoal_bag.target_position_y = robot_judge1_data_.target_position_y;
+            pc_send_bag.enemy_outpost_HP = common_bag.enemy_outpost_HP;
             vision_rx_data_pub.publish(pc_send_bag);
-
-            GameStatus_.game_progress=robot_judge1_data_.game_progress;
-            GameStatus_.stage_remain_time=robot_judge1_data_.stage_remain_time;
-            GameStatus_.game_type=robot_judge1_data_.game_type;
-            game_status_pub_.publish(GameStatus_);
-
-            addblood_rx_.current_HP=robot_judge1_data_.current_HP;
-            addblood_rx_.maximum_HP=robot_judge1_data_.maximum_HP;
-            addblood_rx_.game_progress=robot_judge1_data_.game_progress;
-            addblood_rx_.stage_remain_time=robot_judge1_data_.stage_remain_time;
-            addblood_rx_.robot_id=robot_judge1_data_.robot_id;
-            addblood_rx_.enemy_HP_Base=serial_handle.enemy_HP_Base;
-            addblood_rx_.enemy_HP_Hero=serial_handle.enemy_HP_Hero;
-            addblood_rx_.enemy_HP_Infansty1=serial_handle.enemy_HP_Infansty1;
-            addblood_rx_.enemy_HP_Infansty2=serial_handle.enemy_HP_Infansty2;
-            addblood_rx_.enemy_HP_Sentry=serial_handle.enemy_HP_Sentry;
-            addblood_rx_.projectile_allowance_17mm = robot_judge1_data_.projectile_allowance_17mm;
-            addblood_pub.publish(addblood_rx_);
-
-            attacksentry_rx_.current_HP=robot_judge1_data_.current_HP;
-            attacksentry_rx_.enemy_HP_Hero=serial_handle.enemy_HP_Hero;
-            attacksentry_rx_.enemy_HP_Infansty1=serial_handle.enemy_HP_Infansty1;
-            attacksentry_rx_.enemy_HP_Infansty2=serial_handle.enemy_HP_Infansty2;
-            attacksentry_rx_.enemy_HP_Sentry=serial_handle.enemy_HP_Sentry;
-            attacksentry_rx_.stage_remain_time=robot_judge1_data_.stage_remain_time;
-            attacksentry_pub.publish(attacksentry_rx_);
-
-            acessbuff_rx_.center_activate=robot_judge1_data_.center_activate;
-            acessbuff_rx_.stage_remain_time=robot_judge1_data_.stage_remain_time;
-            acessbuff_pub.publish(acessbuff_rx_);
-
-            dense_rx_.stage_remain_time=robot_judge1_data_.stage_remain_time;
-            dense_pub.publish(dense_rx_);
+            common_pub.publish(common_bag);
+            heal_pub.publish(heal_bag);
+            robotstatus_pub.publish(robotstatus_bag);
+            setgoal_pub.publish(setgoal_bag);
 
         } 
         catch (serial::IOException &e) {

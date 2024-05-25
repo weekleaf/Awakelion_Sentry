@@ -6,3 +6,4 @@ uint8 bullet_level      # 弹速等级 1 2 3级
 float32 robot_pitch     # 欧拉角(度)
 float32 robot_yaw       # 欧拉角(度)
 float32 time_stamp      # 电控时间戳(ms) 
+uint16 enemy_outpost_HP    # 敌方前哨站

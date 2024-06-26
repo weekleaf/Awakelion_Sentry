@@ -1,26 +1,20 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(RMUC_Decision)
+project(RMUC_msgs)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-add_compile_options(-std=c++11)
-add_compile_options(-std=c++17)
+add_compile_options(-std=c++20) ##这代表着c++20，可用到chrono::to_stream直接输出现实时间
+
+set(CMAKE_CXX_STANDARD 20)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  actionlib
-  actionlib_msgs
-  behaviortree_cpp
-  geometry_msgs
   message_generation
-  message_runtime
   roscpp
   rospy
-  roslib
-  tf
-  dynamic_reconfigure
-  RMUC_msgs
+  sensor_msgs
+  std_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -57,11 +51,16 @@ find_package(catkin REQUIRED COMPONENTS
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-# add_message_files(
-#   FILES
-#   Message1.msg
-#   Message2.msg
-# )
+add_message_files(
+  DIRECTORY msg
+  FILES
+  clock.msg
+  common.msg
+  heal.msg
+  robotstatus.msg
+  setgoal.msg
+  tx.msg
+)
 
 ## Generate services in the 'srv' folder
 # add_service_files(
@@ -78,10 +77,11 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   std_msgs  # Or other packages containing msgs
-# )
+generate_messages(
+  DEPENDENCIES
+  sensor_msgs
+  std_msgs 
+)
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -114,8 +114,8 @@ find_package(catkin REQUIRED COMPONENTS
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
- LIBRARIES RMUC_Decision
- CATKIN_DEPENDS actionlib actionlib_msgs behaviortree_cpp geometry_msgs message_generation message_runtime roscpp rospy roslib tf dynamic_reconfigure RMUC_msgs
+#  LIBRARIES RMUC_msgs
+ CATKIN_DEPENDS message_generation roscpp rospy sensor_msgs std_msgs message_runtime
  DEPENDS system_lib
 )
 
@@ -132,7 +132,7 @@ include_directories(
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/RMUC_Decision.cpp
+#   src/${PROJECT_NAME}/RMUC_msgs.cpp
 # )
 
 ## Add cmake target dependencies of the library
@@ -143,7 +143,7 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/RMUC_Decision_node.cpp)
+# add_executable(${PROJECT_NAME}_node src/RMUC_msgs_node.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -207,13 +207,13 @@ include_directories(
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_RMUC_Decision.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_RMUC_msgs.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
-add_executable(test_node src/test_node.cpp)
-add_dependencies(test_node ${catkin_EXPORTED_TARGETS})
-target_link_libraries(test_node ${catkin_LIBRARIES})
+add_executable(clock_node src/GameClock.cpp)
+add_dependencies(clock_node ${catkin_EXPORTED_TARGETS})
+target_link_libraries(clock_node ${catkin_LIBRARIES})

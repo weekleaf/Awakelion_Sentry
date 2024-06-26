@@ -1,0 +1,12 @@
+uint16 enemy_hero_HP
+uint16 enemy_sapper_HP
+uint16 enemy_infantry_3_HP
+uint16 enemy_infantry_4_HP
+uint16 enemy_infantry_5_HP
+uint16 enemy_sentry_HP
+uint16 we_hero_HP
+uint16 we_sapper_HP
+uint16 we_infantry_3_HP
+uint16 we_infantry_4_HP
+uint16 we_infantry_5_HP
+# uint16 we_sentry_HP 这个用current_HP代替

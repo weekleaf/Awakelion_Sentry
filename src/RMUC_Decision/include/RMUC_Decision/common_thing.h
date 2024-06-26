@@ -20,26 +20,26 @@ struct points
 //补给点
 const vector<points> supply_p=
 {
-    {1,1,0}
+    {2.12,1.87,0}
 };
 
 //战略点
 const vector<points> strategic_p=
 {
-    {6,6,0},  //enemy_sentry_start_p
-    {4,4,0}  //enemy_R3_slope_p
+    {21.52,6.06,0},  //enemy_sentry_start_p 21.52 6.06
+    {23.67,8.64,0}  //enemy_supply_p 23.67 8.64
 };
 
 //前哨站点
 const vector<points> outpost_p=
 {
-    {2,2,0}  //enemy_outpost_p 
+    {10.25,1.58,0}   //we_outpost_p
 };
 
 //巡逻点，使用deque容器以便将不同的巡逻点通过push_back传进去
-deque<points> patrol_p=
+deque<points> we_sentry_start_patrol_p=
 {
-    {6.58,6.17,0}
+    {6.46,7.50,0}
 };
 
 //一些常用的的东西
@@ -51,7 +51,7 @@ public:
   actionlib::SimpleClientGoalState curt_state = ac->getState();
 
   /*
-  * @brief 在1m*1m的小方格随机巡逻
+  * @brief 在2.34*4.80m的小方格随机巡逻
   * @note pair主要的作用是将两个数据组合成一个数据，两个数据可以是同一类型或者不同类型,其实质上是一个结构体
   * @note template pair make_pair(T1 a, T2 b) { return pair(a, b); }
   */
@@ -60,19 +60,19 @@ public:
     unsigned seed=chrono::system_clock::now().time_since_epoch().count();  //用UNIX时间戳作为种子，确保每次的随机数不一样
     default_random_engine e_x(seed);  //随机数引擎
     default_random_engine e_y(seed);
-    uniform_real_distribution<double> random_x(-1.50,1.50);  //范围为(-1.50,1.50)的随机实数
-    uniform_real_distribution<double> random_y(-1.50,1.50);
+    uniform_real_distribution<double> random_x(-2.00,-0.10);  //范围为(-2.00,-0.20)的随机实数
+    uniform_real_distribution<double> random_y(-2.20,2.20);
     double rand_x,rand_y;
         
-    rand_x=random_x(e_x)+patrol_p[0].x;
-    rand_y=random_y(e_y)+patrol_p[0].y;
+    rand_x=random_x(e_x)+we_sentry_start_patrol_p[0].x;
+    rand_y=random_y(e_y)+we_sentry_start_patrol_p[0].y;
 
 #ifdef DEBUG_MODE
-    cout<<"正常点:"<<"("<<patrol_p[0].x<<","<<patrol_p[0].y<<")"<<endl;
+    cout<<"正常点:"<<"("<<we_sentry_start_patrol_p[0].x<<","<<we_sentry_start_patrol_p[0].y<<")"<<endl;
     cout<<"摆荡点:"<<"("<<rand_x<<","<<rand_y<<")"<<endl;
 #endif
 
-    if(sqrt(pow(rand_x-patrol_p[0].x,2)+pow(rand_y-patrol_p[0].y,2))<0.5)
+    if(sqrt(pow(rand_x-we_sentry_start_patrol_p[0].x,2)+pow(rand_y-we_sentry_start_patrol_p[0].y,2))<0.5)
     {
         ROS_INFO("<0.5m!");
         swing_p();
@@ -118,7 +118,7 @@ public:
                       boost::bind(&common_thing::activeCb, this),
                       boost::bind(&common_thing::feedbackCb, this, _1));
           // Wait for the action to return
-          // ac->waitForResult();
+          ac->waitForResult(ros::Duration(1));
             
           // if (ac->getState() == actionlib::SimpleClientGoalState::SUCCEEDED)
           //     ROS_INFO("You have reached the goal!");

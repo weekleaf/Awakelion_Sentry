@@ -4,8 +4,8 @@
 #include "behaviortree_cpp/loggers/bt_cout_logger.h"
 #include "RMUC_Decision/RMUC_nodes.hpp"
 #define DEBUG_MODE
-#define RMUC_MODE
-// #define TRAIN_MODE
+// #define RMUC_MODE
+#define TRAIN_MODE
 
 using namespace std;
 using namespace ros;
@@ -20,38 +20,68 @@ RMUC_msgs::setgoal setgoal_msg;
 RMUC_msgs::tx tx_msg;
 robot_driver::vision_tx_data auto_aim_msg;
 
-static const char* xml_main = R"(
+static const char* xml_normal = R"(
 <root BTCPP_format="4">
 
   <BehaviorTree ID="MainTree">
     <SequenceWithMemory>
-      <patrol_GOTO gamestart="{@gamestart}"/>
-      <SubTree ID="patrol"/>
+      <Gamestart gamestart_GS="{@gamestart}"/>
+      <SubTree ID="attack"/>
+      <SubTree ID="high priority" _skipIf="@we_outpost_HP!=0"/>
+      <Fallback>
+        <SubTree ID="rebirth" _skipIf="@current_HP>0" _autoremap="1"/>
+        <recover _skipIf="@current_HP>=80" current_HP="{@current_HP}"/>
+      </Fallback>
+      <SubTree ID="patrol" _skipIf="@current_HP<80" _autoremap="1"/>
     </SequenceWithMemory>
   </BehaviorTree>
 
-  <BehaviorTree ID="patrol">
+  <BehaviorTree ID="attack">
+    <SequenceWithMemory>
+      <strategy_GOTO _successIf="@we_outpost_HP<=500" visual_valid="{@visual_valid}"/>
+      <strategy_attack _successIf="@we_outpost_HP<=500||@current_ammo==0"/>
+    </SequenceWithMemory>
+  </BehaviorTree>
+  
+  <BehaviorTree ID="high priority">
+    <Fallback>
+      <commandgoal _skipIf="@target_position_x==0&&@target_position_y==0" current_HP="{@current_HP}" target_position_x="{@target_position_x}" target_position_y="{@target_position_y}"/>
+      <dartgoal _skipIf="@dart_info==0" dart_info="{@dart_info}" current_HP="{@current_HP}"/>
+    </Fallback>
+  </BehaviorTree>
+  
+  <BehaviorTree ID="rebirth">  
     <Sequence>
-      <patrol_prepare visual_valid="{@visual_valid}" current_time="{@current_time}"/>
+      <rebirth_load true_remaining_time="{@true_remaining_time}" current_HP="{@current_HP}" rebirth_accumulation="{@rebirth_accumulation}"/>
+      <rebirth_unlock/>
     </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="patrol">
+    <SequenceWithMemory>
+      <patrol_GOTO/>
+      <patrol_swing visual_valid="{@visual_valid}" current_time="{@current_time}"/>
+    </SequenceWithMemory>
   </BehaviorTree>
 
 </root>
  )";
 
-static const char* xml_train_without_hero = R"(
+static const char* xml_train = R"(
 <root BTCPP_format="4">
 
   <BehaviorTree ID="TrainTree">
     <Sequence>
-      <SubTree ID="command" _skipIf="@cmd_keyboard==0&&@dart_info==0"/>
+      <Gamestart gamestart_GS="{@gamestart}"/>
+      <SubTree ID="patrol" _skipIf="@we_outpost_HP>=500" _autoremap="1"/>
     </Sequence>
-  </BehaviorTree>  
+  </BehaviorTree>
 
-  <BehaviorTree ID="command">
-    <RetryUntilSuccessful num_attempts="99">
-      <commandgoal cmd_kb="{@cmd_keyboard}" dart_info="{@dart_info}" target_position_x="{@target_position_x}" target_position_y="{@target_position_y}"/>
-    </RetryUntilSuccessful>
+  <BehaviorTree ID="patrol">
+    <SequenceWithMemory>
+      <patrol_GOTO/>
+      <patrol_swing visual_valid="{@visual_valid}" current_time="{@current_time}"/>
+    </SequenceWithMemory>
   </BehaviorTree>
 
 </root>
@@ -78,7 +108,6 @@ void setBB(Blackboard::Ptr bb)
   bb->set("current_HP",heal_msg.current_HP);
   bb->set("we_base_HP",common_msg.we_base_HP);
   bb->set("enemy_base_HP",common_msg.enemy_base_HP);
-  bb->set("cmd_keyboard",setgoal_msg.cmd_keyboard);
   bb->set("dart_info",setgoal_msg.dart_info);
   bb->set("target_position_x",setgoal_msg.target_position_x);
   bb->set("target_position_y",setgoal_msg.target_position_y);
@@ -136,41 +165,21 @@ int main(int argc,char** argv)
     return std::make_unique<RMUC_nodes::strategy_GOTO>(name, config, root_nh,bh_tree_nh);
   };
   factory.registerBuilder<RMUC_nodes::strategy_GOTO>("strategy_GOTO", builder_strategy_GOTO);
-  BT::NodeBuilder builder_strategy_attack_1 = [&root_nh, &bh_tree_nh](const std::string& name,
+  BT::NodeBuilder builder_strategy_attack = [&root_nh, &bh_tree_nh](const std::string& name,
                                                               const BT::NodeConfiguration& config) {
-    return std::make_unique<RMUC_nodes::strategy_attack_1>(name, config, root_nh,bh_tree_nh);
+    return std::make_unique<RMUC_nodes::strategy_attack>(name, config, root_nh,bh_tree_nh);
   };
-  factory.registerBuilder<RMUC_nodes::strategy_attack_1>("strategy_attack_1", builder_strategy_attack_1);
-  BT::NodeBuilder builder_strategy_attack_2 = [&root_nh, &bh_tree_nh](const std::string& name,
-                                                              const BT::NodeConfiguration& config) {
-    return std::make_unique<RMUC_nodes::strategy_attack_2>(name, config, root_nh,bh_tree_nh);
-  };
-  factory.registerBuilder<RMUC_nodes::strategy_attack_2>("strategy_attack_2", builder_strategy_attack_2);
-  BT::NodeBuilder builder_strategy_attack_3 = [&root_nh, &bh_tree_nh](const std::string& name,
-                                                              const BT::NodeConfiguration& config) {
-    return std::make_unique<RMUC_nodes::strategy_attack_3>(name, config, root_nh,bh_tree_nh);
-  };
-  factory.registerBuilder<RMUC_nodes::strategy_attack_3>("strategy_attack_3", builder_strategy_attack_3);
+  factory.registerBuilder<RMUC_nodes::strategy_attack>("strategy_attack", builder_strategy_attack);
   BT::NodeBuilder builder_patrol_GOTO = [&root_nh, &bh_tree_nh](const std::string& name,
                                                               const BT::NodeConfiguration& config) {
     return std::make_unique<RMUC_nodes::patrol_GOTO>(name, config, root_nh,bh_tree_nh);
   };
   factory.registerBuilder<RMUC_nodes::patrol_GOTO>("patrol_GOTO", builder_patrol_GOTO);
-  BT::NodeBuilder builder_patrol_prepare = [&root_nh, &bh_tree_nh](const std::string& name,
-                                                              const BT::NodeConfiguration& config) {
-    return std::make_unique<RMUC_nodes::patrol_prepare>(name, config, root_nh,bh_tree_nh);
-  };
-  factory.registerBuilder<RMUC_nodes::patrol_prepare>("patrol_prepare", builder_patrol_prepare);
   BT::NodeBuilder builder_patrol_swing = [&root_nh, &bh_tree_nh](const std::string& name,
                                                               const BT::NodeConfiguration& config) {
     return std::make_unique<RMUC_nodes::patrol_swing>(name, config, root_nh,bh_tree_nh);
   };
   factory.registerBuilder<RMUC_nodes::patrol_swing>("patrol_swing", builder_patrol_swing);
-  BT::NodeBuilder builder_guardbase = [&root_nh, &bh_tree_nh](const std::string& name,
-                                                              const BT::NodeConfiguration& config) {
-    return std::make_unique<RMUC_nodes::guardbase>(name, config, root_nh,bh_tree_nh);
-  };
-  factory.registerBuilder<RMUC_nodes::guardbase>("guardbase", builder_guardbase);
   BT::NodeBuilder builder_rebirth_load = [&root_nh, &bh_tree_nh](const std::string& name,
                                                               const BT::NodeConfiguration& config) {
     return std::make_unique<RMUC_nodes::rebirth_load>(name, config, root_nh,bh_tree_nh);
@@ -186,6 +195,11 @@ int main(int argc,char** argv)
     return std::make_unique<RMUC_nodes::recover>(name, config, root_nh,bh_tree_nh);
   };
   factory.registerBuilder<RMUC_nodes::recover>("recover", builder_recover);
+  BT::NodeBuilder builder_dartgoal = [&root_nh, &bh_tree_nh](const std::string& name,
+                                                              const BT::NodeConfiguration& config) {
+    return std::make_unique<RMUC_nodes::dartgoal>(name, config, root_nh,bh_tree_nh);
+  };
+  factory.registerBuilder<RMUC_nodes::dartgoal>("dartgoal", builder_dartgoal);
   BT::NodeBuilder builder_commandgoal = [&root_nh, &bh_tree_nh](const std::string& name,
                                                               const BT::NodeConfiguration& config) {
     return std::make_unique<RMUC_nodes::commandgoal>(name, config, root_nh,bh_tree_nh);
@@ -193,11 +207,13 @@ int main(int argc,char** argv)
   factory.registerBuilder<RMUC_nodes::commandgoal>("commandgoal", builder_commandgoal);
   
 #ifdef RMUC_MODE
-  factory.registerBehaviorTreeFromText(xml_main);
+
+  factory.registerBehaviorTreeFromText(xml_normal);
+
 #endif
 
 #ifdef TRAIN_MODE
-  factory.registerBehaviorTreeFromText(xml_train_without_hero);
+  factory.registerBehaviorTreeFromText(xml_train);
 #endif
 
   auto global_BB=Blackboard::create();
@@ -231,9 +247,9 @@ int main(int argc,char** argv)
     tree.tickWhileRunning();
     
 #ifdef DEBUG_MODE
-    cout<<"----------------------------(DEBUG_MODE)-------------------------------"<<endl;
-    global_BB->debugMessage();
-    cout<<"当前enemy_outpost_HP数值为:"<<" "<<global_BB->get<uint16_t>("enemy_outpost_HP")<<endl; 
+    // cout<<"----------------------------(DEBUG_MODE)-------------------------------"<<endl;
+    // global_BB->debugMessage();
+    // cout<<"当前数值为:"<<" "<<global_BB->get<uint16_t>("enemy_outpost_HP")<<endl; 
 #endif  
 
     r.sleep();

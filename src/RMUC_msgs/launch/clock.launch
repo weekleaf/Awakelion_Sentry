@@ -1,3 +1,0 @@
-<launch>
-  <node pkg="RMUC_msgs" type="clock_node" name="clock_node" output="screen" />
-</launch>

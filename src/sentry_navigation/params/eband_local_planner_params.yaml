@@ -21,7 +21,7 @@ EBandPlannerROS:
   costmap_weight: 15.0 #用于计算到障碍物的距离的成本图权重系数
 
   #Trajectory Controller Parameters
-  max_vel_lin: 2.0
+  max_vel_lin: 3.0
   max_vel_th: 5.0
   min_vel_lin: 0.01
   min_vel_th: 0.0
@@ -29,7 +29,7 @@ EBandPlannerROS:
   in_place_trans_vel: 0.0
   k_prop: 4.0
   k_damp: 3.5
-  Ctrl_Rate: 30.0
+  Ctrl_Rate: 20.0
   max_acceleration: 0.75
   virtual_mass: 0.75
   max_translational_acceleration: 0.75

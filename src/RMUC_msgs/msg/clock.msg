@@ -1,2 +1,0 @@
-uint16 current_time_from_clock
-uint16 remaining_time_from_clock

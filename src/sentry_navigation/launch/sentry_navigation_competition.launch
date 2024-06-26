@@ -9,13 +9,17 @@
   <node name='odom_trans' pkg="sentry_navigation" type="odom_transform"/>
 
   <!-- 设置需要用于导航的地图 -->
-  <arg name="map_file" default="$(find sentry_navigation)/map/map.yaml"/>
+  <arg name="map_file" default="$(find sentry_navigation)/map/yuanshen.yaml"/>
   <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)">
   <param name="frame_id" value="map" />
   </node> 
 
   <include file="$(find sentry_navigation)/launch/move_base.launch"/>
 
+  <!-- 决策 -->
+  <!-- <include file="$(find RMUC_Decision)/launch/test.launch"/>
+  <include file="$(find RMUC_msgs)/launch/clock.launch"/> -->
+
   <!-- RVIZ -->
-  <node pkg="rviz" type="rviz" name="rviz" required="true" args="-d $(find sentry_navigation)/rviz/nav.rviz"/>
+  <!-- <node pkg="rviz" type="rviz" name="rviz" required="true" args="-d $(find sentry_navigation)/rviz/nav.rviz"/> -->
 </launch>
